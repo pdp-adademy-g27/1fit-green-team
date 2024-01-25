@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+security:
+  token:
+    expiration: 86400
+    secret: ZFwrxIeSMF3oKmMtUq8wCgfDVRnte68J5cRG7aE7eG6nLe2miQyM4We7J7yzME7w
