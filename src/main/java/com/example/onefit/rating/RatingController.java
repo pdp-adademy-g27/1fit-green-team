@@ -43,7 +43,8 @@ public class RatingController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
+    public ResponseEntity<?> delete(@PathVariable UUID id){
         ratingService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
