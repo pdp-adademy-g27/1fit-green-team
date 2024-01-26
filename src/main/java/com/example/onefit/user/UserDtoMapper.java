@@ -5,26 +5,34 @@ import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserUpdateDto;
 import com.example.onefit.user.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserResponseDto, UserUpdateDto> {
+
+    private final ModelMapper mapper;
+
+
     @Override
     protected ModelMapper getMapper() {
-        return null;
+        return mapper;
     }
 
     @Override
     public User toEntity(UserCreateDto userCreateDto) {
-        return null;
+        return mapper.map(userCreateDto,User.class);
     }
 
     @Override
     public UserResponseDto toResponse(User user) {
-        return null;
+        return mapper.map(user,UserResponseDto.class);
     }
 
     @Override
     public void toUpdate(UserUpdateDto userUpdateDto, User user) {
-
+        mapper.map(userUpdateDto,user);
     }
 }
