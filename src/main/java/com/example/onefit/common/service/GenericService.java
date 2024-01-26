@@ -26,7 +26,7 @@ public abstract class GenericService<ID, ENTITY, RESPONSE_DTO, CREATE_DTO, UPDAT
     }
 
     @Transactional
-    public Page<RESPONSE_DTO> get(String predicate, Pageable pageable) {
+    public Page<RESPONSE_DTO> getAll(String predicate, Pageable pageable) {
         Specification<ENTITY> specification = SpecificationBuilder.build(predicate);
         Page<ENTITY> page;
 
