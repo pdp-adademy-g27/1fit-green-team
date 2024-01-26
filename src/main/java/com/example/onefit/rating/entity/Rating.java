@@ -24,12 +24,4 @@ public class Rating {
     private User user;
     @ManyToOne
     private Course course;
-
-
-
-
-
-
-
-
 }
