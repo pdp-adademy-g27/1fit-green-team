@@ -1,4 +1,4 @@
-package com.example.onefit.catigoriy.entity;
+package com.example.onefit.category.entity;
 
 import com.example.onefit.course.entity.Course;
 import jakarta.persistence.*;
