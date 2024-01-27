@@ -1,7 +1,7 @@
 package com.example.onefit.course.entity;
 
 import com.example.onefit.active.entity.Activity;
-import com.example.onefit.catigoriy.entity.Category;
+import com.example.onefit.category.entity.Category;
 import com.example.onefit.location.entity.Location;
 import com.example.onefit.rating.entity.Rating;
 import com.example.onefit.saved.entity.Saved;
