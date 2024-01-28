@@ -26,7 +26,7 @@ public class RatingController {
 
     @GetMapping
     public ResponseEntity<Page<RatingResponseDto>> get(@RequestParam(required = false) String predicate, Pageable pageable){
-        Page<RatingResponseDto> ratingResponseDTOS = ratingService.get(predicate, pageable);
+        Page<RatingResponseDto> ratingResponseDTOS = ratingService.getAll(predicate, pageable);
         return ResponseEntity.ok(ratingResponseDTOS);
     }
 
