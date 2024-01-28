@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Page<UserResponseDto>> getAll(Pageable pageable,
                                                             @RequestParam(required = false) String predicate) {
-        Page<UserResponseDto> all = userService.get(predicate,pageable);
+        Page<UserResponseDto> all = userService.getAll(predicate,pageable);
         return ResponseEntity.ok(all);
     }
 

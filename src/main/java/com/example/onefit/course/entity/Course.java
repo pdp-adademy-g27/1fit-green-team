@@ -2,6 +2,7 @@ package com.example.onefit.course.entity;
 
 import com.example.onefit.active.entity.Activity;
 import com.example.onefit.category.entity.Category;
+import com.example.onefit.facilities.entity.Facilities;
 import com.example.onefit.location.entity.Location;
 import com.example.onefit.rating.entity.Rating;
 import com.example.onefit.saved.entity.Saved;
@@ -66,5 +67,16 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<Saved> saveds;
+
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "course_facilities",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "facilities_id")
+    )
+    private Set<Facilities> facilities;
 
 }

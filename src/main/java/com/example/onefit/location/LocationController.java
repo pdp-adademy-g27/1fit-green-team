@@ -34,7 +34,7 @@ public class LocationController {
 
     @GetMapping
     public ResponseEntity<Page<LocationResponseDto>> getAll(@Valid @RequestParam(required = false) String predicate, Pageable pageable) {
-        Page<LocationResponseDto> getAll = locationService.get(predicate, pageable);
+        Page<LocationResponseDto> getAll = locationService.getAll(predicate, pageable);
         return ResponseEntity.ok(getAll);
     }
 
