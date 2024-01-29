@@ -1,4 +1,6 @@
 package com.example.onefit.course.dto;
 
-public class CourseCreateDto {
+import com.example.onefit.user.dto.UserBaseDto;
+
+public class CourseCreateDto extends CourseBaseDto {
 }
