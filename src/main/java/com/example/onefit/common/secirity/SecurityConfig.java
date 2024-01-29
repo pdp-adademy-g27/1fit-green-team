@@ -19,7 +19,13 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         registry -> registry
-                                .requestMatchers("/user/auth/**", "/message/**")
+                                .requestMatchers("/location/**",
+                                        "/course/**",
+                                        "/swagger-ui.html",
+                                        "swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "swagger-resources/**",
+                                        "/webjars/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
