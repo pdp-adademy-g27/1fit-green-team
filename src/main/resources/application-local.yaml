@@ -1,4 +1,7 @@
 spring:
+  data:
+    redis:
+      url: jdbc:redis://localhost:9001
   jpa:
     hibernate:
       ddl-auto: update

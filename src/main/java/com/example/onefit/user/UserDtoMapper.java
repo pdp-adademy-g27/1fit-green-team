@@ -31,6 +31,7 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
         return mapper.map(user,UserResponseDto.class);
     }
 
+
     @Override
     public void toUpdate(UserUpdateDto userUpdateDto, User user) {
         mapper.map(userUpdateDto,user);

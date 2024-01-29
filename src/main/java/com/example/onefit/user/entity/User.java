@@ -29,7 +29,6 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
-
     @Id
     private UUID id;
 
@@ -51,14 +50,19 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Rating> ratings;
+    @Column(columnDefinition = "boolean default false")
+    private boolean isVerify;
 
     @CreatedDate
     private LocalDateTime created;
 
     @LastModifiedDate
     private LocalDateTime updated;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
+
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -123,7 +127,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return phoneNumber;
     }
 
     @Override
