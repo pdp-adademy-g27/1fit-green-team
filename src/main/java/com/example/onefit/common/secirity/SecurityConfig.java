@@ -20,9 +20,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         registry -> registry
                                 .requestMatchers(
+                                        "/course/**",
                                         "/email/**",
                                         "/location/**",
-                                        "/course/**",
                                         "/swagger-ui.html",
                                         "swagger-ui/**",
                                         "/v3/api-docs/**",
@@ -45,4 +45,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
