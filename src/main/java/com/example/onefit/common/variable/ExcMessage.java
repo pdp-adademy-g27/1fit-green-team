@@ -6,5 +6,9 @@ public interface ExcMessage {
     String SUCCESSFULLY_VERIFICATION = "Successfully verification";
     String INCORRECT_EMAIL_VER = "Incorrect email verification";
     String TIME_OUT = "Time out";
+    String BAD_CREDENTIALS = "bad credentials";
+
+
+
 
 }

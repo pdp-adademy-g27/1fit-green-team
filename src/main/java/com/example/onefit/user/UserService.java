@@ -3,6 +3,7 @@ package com.example.onefit.user;
 import com.example.onefit.common.mapper.GenericMapper;
 import com.example.onefit.common.repository.GenericRepository;
 import com.example.onefit.common.service.GenericService;
+import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
 import lombok.Getter;
@@ -18,13 +19,11 @@ import java.util.UUID;
 @Getter
 @Service
 @RequiredArgsConstructor
-public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto> implements UserDetailsService
-{
+public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto> implements UserDetailsService {
 
     private final UserRepository repository;
     private final UserDtoMapper mapper;
-    private final Class<User> entityClass=User.class;
-
+    private final Class<User> entityClass = User.class;
 
 
     @Override
@@ -41,6 +40,8 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByPhoneNumber(username)
-                .orElseThrow(() -> new BadCredentialsException("bad credentials"));
+                .orElseThrow(() -> new BadCredentialsException(ExcMessage.BAD_CREDENTIALS));
     }
+
+
 }

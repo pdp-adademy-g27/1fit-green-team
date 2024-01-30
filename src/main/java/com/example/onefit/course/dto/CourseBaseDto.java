@@ -18,6 +18,4 @@ public class CourseBaseDto {
     private String description;
     @NotBlank
     private boolean isFemale;
-    @NotBlank
-    private UUID locationId;
 }

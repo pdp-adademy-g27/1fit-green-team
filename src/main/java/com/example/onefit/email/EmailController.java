@@ -17,8 +17,8 @@ public class EmailController {
 
     @PostMapping("/emilVerified")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> emailVerified(@RequestParam String emailRequestDto) {
-        emailService.emailVerified(emailRequestDto);
+    public ResponseEntity<?> emailVerified(@RequestParam String email) {
+        emailService.emailVerified(email);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
