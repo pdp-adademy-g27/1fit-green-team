@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NotificationService {
 
-
     private final JavaMailSender javaMailSender;
 
     public void sendVerifyCode(String email,int code) {

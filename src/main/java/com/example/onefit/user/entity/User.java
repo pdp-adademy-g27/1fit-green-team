@@ -3,7 +3,6 @@ package com.example.onefit.user.entity;
 import com.example.onefit.active.entity.Activity;
 import com.example.onefit.course.entity.Course;
 import com.example.onefit.rating.entity.Rating;
-import com.example.onefit.saved.entity.Saved;
 import com.example.onefit.user.permission.entity.Permission;
 import com.example.onefit.user.role.entiy.Role;
 import jakarta.persistence.*;
@@ -106,18 +105,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Activity> activities;
-
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_saved",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private Set<Saved> saveds;
-
 
 
     @Override
