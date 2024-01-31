@@ -18,7 +18,7 @@ public class NotificationService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(Variables.MY_EMAIL);
             message.setTo(email);
-            message.setSubject("Verify code");
+            message.setSubject(Variables.VERIFY_CODE_MESSAGE);
             message.setText(String.valueOf(code));
             javaMailSender.send(message);
         } catch (Exception e) {

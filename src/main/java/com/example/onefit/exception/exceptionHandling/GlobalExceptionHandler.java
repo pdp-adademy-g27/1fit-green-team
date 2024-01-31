@@ -7,18 +7,14 @@ import com.example.onefit.exception.TimeOut;
 import com.example.onefit.exception.TokenExpiredException;
 import com.example.onefit.exception.dto.ExceptionDto;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.PushBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j

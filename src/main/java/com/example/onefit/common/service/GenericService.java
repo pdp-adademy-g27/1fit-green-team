@@ -52,6 +52,7 @@ public abstract class GenericService<ID, ENTITY, RESPONSE_DTO, CREATE_DTO, UPDAT
         return getMapper().toResponse(entity);
     }
 
+    @Transactional
     public RESPONSE_DTO update(UPDATE_DTO updateDto, ID id) {
         return internalUpdate(updateDto, id);
     }

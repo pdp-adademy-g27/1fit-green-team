@@ -6,6 +6,7 @@ import com.example.onefit.rating.dto.RatingResponseDto;
 import com.example.onefit.rating.dto.RatingUpdateDto;
 import com.example.onefit.rating.entity.Rating;
 import com.example.onefit.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class RatingService extends GenericService<UUID, Rating, RatingResponseDt
     private final Class<Rating> entityClass = Rating.class;
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     protected RatingResponseDto internalCreate(RatingCreateDto ratingCreateDto) {
         Rating entity = mapper.toEntity(ratingCreateDto);
