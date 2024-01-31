@@ -1,6 +1,7 @@
 package com.example.onefit.facilities;
 
 import com.example.onefit.common.service.GenericService;
+import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.facilities.dto.FacilitiesCreateDto;
 import com.example.onefit.facilities.dto.FacilitiesResponseDto;
 import com.example.onefit.facilities.dto.FacilitiesUpdateDto;
@@ -33,8 +34,7 @@ public class FacilitiesService extends GenericService<UUID, Facilities, Faciliti
     @Override
     protected FacilitiesResponseDto internalUpdate(FacilitiesUpdateDto facilitiesUpdateDto, UUID id) {
         Facilities facilities = repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Facility with id %s not found".formatted(id)));
-
+                () -> new EntityNotFoundException(ExcMessage.FACILITIES_NOTFOUND.formatted(id)));
         mapper.toUpdate(facilitiesUpdateDto, facilities);
         Facilities saved = repository.save(facilities);
         return mapper.toResponse(saved);

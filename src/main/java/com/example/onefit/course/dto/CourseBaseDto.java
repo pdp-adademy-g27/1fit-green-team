@@ -1,12 +1,10 @@
 package com.example.onefit.course.dto;
 
-import com.example.onefit.location.entity.Location;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
