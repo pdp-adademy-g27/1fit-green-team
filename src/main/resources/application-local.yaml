@@ -13,3 +13,11 @@ security:
   token:
     expiration: 86400
     secret: ZFwrxIeSMF3oKmMtUq8wCgfDVRnte68J5cRG7aE7eG6nLe2miQyM4We7J7yzME7w
+one-fit:
+  otp:
+    retry-wait-time: 5 # in seconds
+    retry-count: 3
+    time-to-live: 60 # in seconds
+  notification:
+    sms:
+      eskiz: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDkyODMyMzgsImlhdCI6MTcwNjY5MTIzOCwicm9sZSI6InRlc3QiLCJzaWduIjoiYzU1Njg2ZmY3ZWY4NTczZDFkZGJjYzQwZTViNGU2NTUwOTkxMTUzNzQ0M2I4ZTI4ODhjOGE1YjBhMjgzYWEyNCIsInN1YiI6IjU5MDMifQ.kUTfjH5JokLY6XibD4Nt8lFv21EfV2pKhRbI7KN4jAg
