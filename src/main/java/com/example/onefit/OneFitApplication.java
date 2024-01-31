@@ -9,5 +9,4 @@ public class OneFitApplication {
     public static void main(String[] args) {
         SpringApplication.run(OneFitApplication.class, args);
     }
-
 }
