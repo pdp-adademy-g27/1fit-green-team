@@ -32,6 +32,7 @@ public class CourseResponseDto extends CourseBaseDto{
     private Set<Rating> ratings;
 
     private Set<Saved> saveds;
+
     private LocalDateTime created;
 
     private LocalDateTime updated;

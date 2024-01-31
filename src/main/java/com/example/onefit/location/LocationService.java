@@ -1,6 +1,7 @@
 package com.example.onefit.location;
 
 import com.example.onefit.common.service.GenericService;
+import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.location.dto.LocationCreateDto;
 import com.example.onefit.location.dto.LocationResponseDto;
 import com.example.onefit.location.dto.LocationUpdateDto;
@@ -32,7 +33,7 @@ public class LocationService extends GenericService<UUID, Location, LocationResp
     @Override
     protected LocationResponseDto internalUpdate(LocationUpdateDto locationUpdateDto, UUID id) {
         Location location = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location with id %s not found".formatted(id)));
+                .orElseThrow(() -> new EntityNotFoundException(ExcMessage.LOCATION_NOTFOUND.formatted(id)));
         mapper.toUpdate(locationUpdateDto, location);
         Location updatedLocation = repository.save(location);
         return mapper.toResponse(updatedLocation);

@@ -38,9 +38,9 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username){
         return repository.findByPhoneNumber(username)
-                .orElseThrow(() -> new BadCredentialsException(ExcMessage.BAD_CREDENTIALS));
+                .orElseThrow(() -> new UsernameNotFoundException(ExcMessage.USERNAME_NOTFOUND));
     }
 
 

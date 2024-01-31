@@ -11,34 +11,31 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 @RequiredArgsConstructor
 public class CourseDtoMapper extends GenericMapper<Course, CourseCreateDto, CourseResponseDto, CourseUpdateDto> {
     private final ModelMapper modelMapper;
-    private final FacilitiesDtoMapper facilitiesDtoMapper;
+
     @Override
     protected ModelMapper getMapper() {
-        return null;
+        return modelMapper;
     }
 
     @Override
     public Course toEntity(CourseCreateDto courseCreateDto) {
-        return modelMapper.map(courseCreateDto , Course.class);
+        return modelMapper.map(courseCreateDto, Course.class);
     }
 
 
     @Override
     public CourseResponseDto toResponse(Course course) {
-        CourseResponseDto courseResponseDto = modelMapper.map(course, CourseResponseDto.class);
-        return null;
+        return modelMapper.map(course, CourseResponseDto.class);
     }
-
 
 
     @Override
     public void toUpdate(CourseUpdateDto courseUpdateDto, Course course) {
-         modelMapper.map(courseUpdateDto , course);
+        modelMapper.map(courseUpdateDto, course);
     }
 }
 
