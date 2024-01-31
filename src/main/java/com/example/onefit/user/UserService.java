@@ -1,10 +1,14 @@
 package com.example.onefit.user;
 
 
+import com.example.onefit.common.exeptions.OtpException;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
+import com.example.onefit.phoneNumber.otp.OtpRepository;
+import com.example.onefit.phoneNumber.otp.entity.Otp;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +30,35 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final UserDtoMapper mapper;
     private final Class<User> entityClass = User.class;
     private final PasswordEncoder passwordEncoder;
+    private final OtpRepository otpRepository;
 
 
     @Override
     protected UserResponseDto internalCreate(UserCreateDto userCreateDto) {
-        return null;
+        User entity = mapper.toEntity(userCreateDto);
+        entity.setId(UUID.randomUUID());
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        isPhoneNumberVerified(userCreateDto.getPhoneNumber());
+        User saved = repository.save(entity);
+        return mapper.toResponse(saved);
+    }
+    private void isPhoneNumberVerified(String phoneNumber) {
+        Otp otp = otpRepository
+                .findById(phoneNumber)
+                .orElseThrow(() -> new OtpException.PhoneNumberNotVerified(phoneNumber));
+
+        if (!otp.isVerified()) {
+            throw new OtpException.PhoneNumberNotVerified(phoneNumber);
+        }
     }
 
     @Override
     protected UserResponseDto internalUpdate(UserUpdateDto userUpdateDto, UUID uuid) {
-        return null;
+        User user = repository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("User with id: %s not found".formatted(uuid)));
+        mapper.toUpdate(userUpdateDto,user);
+
+        User savedUser = repository.save(user);
+        return mapper.toResponse(savedUser);
     }
 
 
@@ -56,5 +79,14 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         return mapper.toResponse(user);
     }
 
+
+    public UserResponseDto signUp(UserCreateDto userCreateDto) {
+        User entity = mapper.toEntity(userCreateDto);
+        entity.setId(UUID.randomUUID());
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        isPhoneNumberVerified(userCreateDto.getPhoneNumber());
+        User saved = repository.save(entity);
+        return mapper.toResponse(saved);
+    }
 
 }
