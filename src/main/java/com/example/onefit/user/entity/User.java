@@ -106,7 +106,6 @@ public class User implements UserDetails {
     )
     private Set<Activity> activities;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
