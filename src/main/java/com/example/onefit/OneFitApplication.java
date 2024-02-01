@@ -20,34 +20,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @EnableJpaAuditing
 public class OneFitApplication {
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(OneFitApplication.class, args);
     }
-
-
-//    private void createAdmin() {
-//        String phoneNumber = "998937797499";
-//        String email = "asilbekdev@gmail.com";
-//        if (!userRepository.existsByPhoneNumberOrEmail(phoneNumber, email)) {
-//            Role role = roleRepository.findByName("ADMIN").get();
-//            User user = new User(UUID.randomUUID(),
-//                    "Mavjudbek",
-//                    "Sokhibov",
-//                    LocalDate.of(2003, 1, 23),
-//                    "998944222222",
-//                    "dev@gmail.com",
-//                    passwordEncoder.encode("admin"),
-//                    true,
-//                    LocalDateTime.now(),
-//                    LocalDateTime.now(),
-//                    null,
-//                    Set.of(role), null, null, null, null);
-//            userRepository.save(user);
-//        }
-//    }
 
 }
