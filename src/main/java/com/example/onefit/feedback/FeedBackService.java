@@ -19,6 +19,7 @@ public class FeedBackService extends GenericService<UUID, FeedBack, FeedBackResp
     private final Class<FeedBack> entityClass = FeedBack.class;
     private final FeedBackMapperDto mapper;
 
+
     @Override
     protected FeedBackResponseDto internalCreate(FeedBackCreateDto feedBackCreateDto) {
         FeedBack entity = mapper.toEntity(feedBackCreateDto);
