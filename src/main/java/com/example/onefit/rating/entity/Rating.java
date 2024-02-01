@@ -1,6 +1,7 @@
 package com.example.onefit.rating.entity;
 
 import com.example.onefit.course.entity.Course;
+import com.example.onefit.studio.entity.Studio;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,4 +23,6 @@ public class Rating {
     private User user;
     @ManyToOne
     private Course course;
+    @ManyToOne
+    private Studio studio;
 }
