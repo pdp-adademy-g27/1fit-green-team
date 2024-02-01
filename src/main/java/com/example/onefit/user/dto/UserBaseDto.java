@@ -23,4 +23,5 @@ public class UserBaseDto {
     private LocalDate birth;
     @NotBlank
     private String phoneNumber;
+    private String email;
 }
