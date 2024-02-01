@@ -41,6 +41,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         isPhoneNumberVerified(userCreateDto.getPhoneNumber());
         User saved = repository.save(entity);
         return mapper.toResponse(saved);
+
     }
     private void isPhoneNumberVerified(String phoneNumber) {
         Otp otp = otpRepository
@@ -80,6 +81,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     }
 
 
+    @Transactional
     public UserResponseDto signUp(UserCreateDto userCreateDto) {
         User entity = mapper.toEntity(userCreateDto);
         entity.setId(UUID.randomUUID());
