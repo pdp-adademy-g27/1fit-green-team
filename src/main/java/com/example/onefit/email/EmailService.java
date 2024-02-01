@@ -7,12 +7,10 @@ import com.example.onefit.exception.IncorrectPassword;
 import com.example.onefit.exception.TimeOut;
 import com.example.onefit.notification.NotificationService;
 import com.example.onefit.user.UserRepository;
-import com.example.onefit.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
