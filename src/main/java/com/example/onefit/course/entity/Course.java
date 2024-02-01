@@ -5,6 +5,7 @@ import com.example.onefit.category.entity.Category;
 import com.example.onefit.facilities.entity.Facilities;
 import com.example.onefit.location.entity.Location;
 import com.example.onefit.rating.entity.Rating;
+import com.example.onefit.studio.entity.Studio;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,4 +67,7 @@ public class Course {
     )
     private Set<Facilities> facilities;
 
+
+    @ManyToOne
+    private Studio studio;
 }
