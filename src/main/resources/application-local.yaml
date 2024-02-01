@@ -13,3 +13,8 @@ security:
   token:
     expiration: 86400
     secret: ZFwrxIeSMF3oKmMtUq8wCgfDVRnte68J5cRG7aE7eG6nLe2miQyM4We7J7yzME7w
+one-fit:
+  otp:
+    retry-wait-time: 5
+    retry-count: 3
+    time-to-live: 60

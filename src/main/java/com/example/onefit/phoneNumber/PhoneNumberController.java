@@ -38,7 +38,7 @@ public class PhoneNumberController {
     public ResponseEntity<UserResponseDto> signUp(
             @RequestBody @Valid UserCreateDto userCreateDto
     ) {
-        UserResponseDto userResponseDto = userService.create(userCreateDto);
+        UserResponseDto userResponseDto = userService.signUp(userCreateDto);
         String token = jwtService.generateToken(userResponseDto.getPhoneNumber());
 
         return ResponseEntity
