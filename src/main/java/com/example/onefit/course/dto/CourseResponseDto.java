@@ -1,6 +1,6 @@
 package com.example.onefit.course.dto;
 
-import com.example.onefit.active.ActivityResponseDto;
+import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.category.dto.CategoryResponseDto;
 import com.example.onefit.facilities.dto.FacilitiesResponseDto;
 import com.example.onefit.rating.entity.Rating;
