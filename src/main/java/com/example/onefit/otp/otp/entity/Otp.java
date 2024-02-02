@@ -1,4 +1,4 @@
-package com.example.onefit.phoneNumber.otp.entity;
+package com.example.onefit.otp.otp.entity;
 
 import jakarta.persistence.EntityListeners;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-// todo need to read time to live from property
 @RedisHash(value = "otp", timeToLive = 60 * 60 * 24)
 @EntityListeners(AuditingEntityListener.class)
 public class Otp {

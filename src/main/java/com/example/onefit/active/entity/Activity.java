@@ -1,6 +1,7 @@
 package com.example.onefit.active.entity;
 
 import com.example.onefit.course.entity.Course;
+import com.example.onefit.studio.entity.Studio;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,6 +26,11 @@ public class Activity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Course> courses;
+
+    @ManyToMany(mappedBy = "activities")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Studio> studios;
 
 
     @ManyToMany(mappedBy = "activities")

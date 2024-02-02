@@ -5,6 +5,7 @@ import com.example.onefit.category.entity.Category;
 import com.example.onefit.facilities.entity.Facilities;
 import com.example.onefit.location.entity.Location;
 import com.example.onefit.rating.entity.Rating;
+import com.example.onefit.studio.entity.Studio;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,20 +27,25 @@ public class Course {
     private boolean isFemale;
 
     @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Location location;
 
 
     @ManyToMany(mappedBy = "courses")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<User> users;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "course")
-
     private Set<Rating> ratings;
 
 
     @ManyToMany(mappedBy = "courses")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Category> categories;
 
 
@@ -66,4 +72,9 @@ public class Course {
     )
     private Set<Facilities> facilities;
 
+
+    @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Studio studio;
 }

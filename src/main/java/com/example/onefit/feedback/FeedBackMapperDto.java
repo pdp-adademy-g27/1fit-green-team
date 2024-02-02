@@ -7,9 +7,9 @@ import com.example.onefit.feedback.dto.FeedBackUpdateDto;
 import com.example.onefit.feedback.entity.FeedBack;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class FeedBackMapperDto extends GenericMapper<FeedBack, FeedBackCreateDto, FeedBackResponseDto, FeedBackUpdateDto> {
     private final ModelMapper mapper;

@@ -1,4 +1,4 @@
-package com.example.onefit.phoneNumber.otp.dto;
+package com.example.onefit.otp.otp.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

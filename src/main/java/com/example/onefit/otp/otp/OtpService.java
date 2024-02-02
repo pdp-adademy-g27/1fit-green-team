@@ -1,17 +1,16 @@
-package com.example.onefit.phoneNumber.otp;
+package com.example.onefit.otp.otp;
 
 import com.example.onefit.common.exeptions.OtpException;
 import com.example.onefit.common.response.CommonResponse;
 import com.example.onefit.notification.sms.SmsNotificationService;
-import com.example.onefit.phoneNumber.otp.entity.Otp;
+import com.example.onefit.otp.otp.entity.Otp;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.example.onefit.phoneNumber.otp.dto.ValidatePhoneNumberRequestDto;
-
+import com.example.onefit.otp.otp.dto.ValidatePhoneNumberRequestDto;
 
 
 import java.time.Duration;
@@ -19,9 +18,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
+import static com.example.onefit.common.variable.Variables.*;
+
 @Service
 @RequiredArgsConstructor
-// todo fix logic  here
 public class OtpService {
     private final OtpRepository otpRepository;
     private final Random random = new Random();
@@ -31,7 +31,7 @@ public class OtpService {
     private int retryCount;
     @Value("${one-fit.otp.time-to-live}")
     private int timeToLive;
-    private final String VERIFICATION_MESSAGE = "Your verification code is: %d%n";
+
     private final SmsNotificationService smsNotificationService;
 
     @Transactional
@@ -47,20 +47,21 @@ public class OtpService {
             Otp otp = sendSmsInternal(phoneNumber);
             otpRepository.save(otp);
 
-            return new CommonResponse("Sms was sent successfully", LocalDateTime.now(), HttpStatus.OK.value());
+            return new CommonResponse(SEND_SMS_MESSAGE, LocalDateTime.now(), HttpStatus.OK.value());
         }
 
         Otp otp = existingOtp
-                .orElseThrow(() -> new EntityNotFoundException("we didn't send you any verification code"));
+                .orElseThrow(() -> new EntityNotFoundException(WE_DID_VERIFICATION_CODE));
 
         if (otp.getCode() == requestDto.getOtp()) {
             otp.setVerified(true);
             otpRepository.save(otp);
-            return new CommonResponse("Otp was successfully verified", LocalDateTime.now(), HttpStatus.OK.value());
+            return new CommonResponse(OTP_SUCCESSFULLY, LocalDateTime.now(), HttpStatus.OK.value());
         } else {
-            return new CommonResponse("Otp was incorrect", LocalDateTime.now(), HttpStatus.BAD_REQUEST.value());
+            return new CommonResponse(OTP_INCORRECT, LocalDateTime.now(), HttpStatus.BAD_REQUEST.value());
         }
     }
+
 
     public CommonResponse reTry(Otp otp) {
 
@@ -76,7 +77,7 @@ public class OtpService {
         Otp resentOtp = sendSmsInternal(otp);
         otpRepository.save(resentOtp);
 
-        return new CommonResponse("Sms was re-sent successfully", LocalDateTime.now(), HttpStatus.OK.value());
+        return new CommonResponse(SMS_RESENT, LocalDateTime.now(), HttpStatus.OK.value());
     }
 
     private Otp sendSmsInternal(String phoneNumber) {

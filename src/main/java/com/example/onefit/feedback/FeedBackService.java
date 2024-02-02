@@ -15,8 +15,11 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class FeedBackService extends GenericService<UUID, FeedBack, FeedBackResponseDto, FeedBackCreateDto, FeedBackUpdateDto> {
+
     private final FeedBackRepository repository;
+
     private final Class<FeedBack> entityClass = FeedBack.class;
+
     private final FeedBackMapperDto mapper;
 
 
