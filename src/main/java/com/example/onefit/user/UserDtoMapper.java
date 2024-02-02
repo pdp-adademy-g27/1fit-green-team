@@ -1,6 +1,7 @@
 package com.example.onefit.user;
 
 import com.example.onefit.common.mapper.GenericMapper;
+import com.example.onefit.subscription.SubscriptionDtoMapper;
 import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserUpdateDto;
@@ -9,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @RequiredArgsConstructor
 public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserResponseDto, UserUpdateDto> {
 
     private final ModelMapper mapper;
+    private final SubscriptionDtoMapper subscriptionDtoMapper;
 
 
     @Override
@@ -28,7 +31,8 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
 
     @Override
     public UserResponseDto toResponse(User user) {
-        return mapper.map(user,UserResponseDto.class);
+       return mapper.map(user, UserResponseDto.class);
+
     }
 
 
