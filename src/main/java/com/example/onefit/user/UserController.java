@@ -1,7 +1,6 @@
 package com.example.onefit.user;
 
 import com.example.onefit.user.dto.*;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
