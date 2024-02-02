@@ -13,9 +13,9 @@ public class SubscriptionResponseDto {
 
     private UUID id;
 
-    private String days;
+    private Integer days;
 
-    private String freezingDay;
+    private Integer freezingDay;
 
     private Double price;
 
