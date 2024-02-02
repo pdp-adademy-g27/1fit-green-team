@@ -1,13 +1,10 @@
 package com.example.onefit.subscription.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.onefit.user.entity.User;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -20,10 +17,10 @@ public class Subscription {
     @Id
     private UUID id;
     @Column(nullable = false)
-    private String days;
+    private Integer days;
 
     @Column(nullable = false)
-    private String freezingDay;
+    private Integer freezingDay;
 
     @Column(nullable = false)
     private Double price;
@@ -32,6 +29,11 @@ public class Subscription {
     private String images;
 
     private boolean isPopular;
+
+    @OneToMany(mappedBy = "subscription")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<User> users;
 
 
 }
