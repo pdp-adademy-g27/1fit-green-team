@@ -5,11 +5,15 @@ import com.example.onefit.studio.dto.StudioCreateDto;
 import com.example.onefit.studio.dto.StudioResponseDto;
 import com.example.onefit.studio.dto.StudioUpdateDto;
 import com.example.onefit.studio.entity.Studio;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static com.example.onefit.common.variable.ExcMessage.STUDIO_NOTFOUND;
 
 @Service
 @Getter
@@ -22,17 +26,20 @@ public class StudioService extends GenericService<UUID, Studio, StudioResponseDt
 
     private final StudioMapperDto mapper;
 
+    @Transactional
     @Override
-    protected StudioResponseDto internalCreate(StudioCreateDto studioCreateDto) {
+    public StudioResponseDto internalCreate(StudioCreateDto studioCreateDto) {
         Studio entity = mapper.toEntity(studioCreateDto);
         entity.setId(UUID.randomUUID());
         Studio saved = repository.save(entity);
         return mapper.toResponse(saved);
     }
 
+    @Transactional
     @Override
-    protected StudioResponseDto internalUpdate(StudioUpdateDto studioUpdateDto, UUID uuid) {
-        Studio studio = repository.findById(uuid).orElseThrow();
+    public StudioResponseDto internalUpdate(StudioUpdateDto studioUpdateDto, UUID id) {
+        Studio studio = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(STUDIO_NOTFOUND.formatted(id)));
         studio.setName(studioUpdateDto.getName());
         studio.setDescription(studioUpdateDto.getDescription());
         studio.setLocation(studioUpdateDto.getLocation());

@@ -1,6 +1,6 @@
 package com.example.onefit.otp.otp;
 
-import com.example.onefit.common.exeptions.OtpException;
+import com.example.onefit.exception.OtpException;
 import com.example.onefit.common.response.CommonResponse;
 import com.example.onefit.notification.sms.SmsNotificationService;
 import com.example.onefit.otp.otp.entity.Otp;

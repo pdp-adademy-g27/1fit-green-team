@@ -1,7 +1,7 @@
 package com.example.onefit.user;
 
 
-import com.example.onefit.common.exeptions.OtpException;
+import com.example.onefit.exception.OtpException;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.course.CourseRepository;
