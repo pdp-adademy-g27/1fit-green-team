@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Getter
 public class RoleService extends GenericService<Role, UUID, RoleResponseDto, RoleCreateDto, RoleUpdateDto> {
 
-    private final RoleRepository roleRepository;
+    private final RoleRepository repository;
     private final PermissionRepository permissionRepository;
     private final Class<Role> entityClass = Role.class;
     private final RoleDtoMapper roleDtoMapper;
@@ -51,7 +51,7 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
         entity.setPermissions(permissions);
         entity.setId(UUID.randomUUID());
 
-        Role saved = roleRepository.save(entity);
+        Role saved = repository.save(entity);
         return roleDtoMapper.toResponse(saved);
 
     }
@@ -68,11 +68,26 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
 //        return roleDtoMapper.toResponse(saved);
     }
 
+    @Override
+    protected GenericRepository<UUID, Role> getRepository() {
+        return null;
+    }
+
+    @Override
+    protected Class<UUID> getEntityClass() {
+        return null;
+    }
+
+    @Override
+    protected GenericMapper<UUID, RoleCreateDto, RoleResponseDto, RoleUpdateDto> getMapper() {
+        return null;
+    }
+
 
 
 
         public RoleResponseDto getByName(String name) {
-            Role role = roleRepository
+            Role role = repository
                     .findByName(name)
                     .orElseThrow(
                             () -> new EntityNotFoundException("Role with name: %s not found".formatted(name))
