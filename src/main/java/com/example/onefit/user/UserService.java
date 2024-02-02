@@ -1,6 +1,8 @@
 package com.example.onefit.user;
 
 
+import com.example.onefit.common.secirity.JwtService;
+import com.example.onefit.exception.DataNotFoundException;
 import com.example.onefit.exception.OtpException;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
@@ -14,6 +16,8 @@ import com.example.onefit.subscription.SubscriptionRepository;
 import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
+import io.jsonwebtoken.Claims;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -43,6 +47,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final OtpRepository otpRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final CourseRepository courseRepository;
+    private final JwtService jwtService;
 
 
 
@@ -143,4 +148,11 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     }
 
 
+    public String refreshToken(String refreshToken){
+        Claims claims = jwtService.getClaims(refreshToken);
+        String userId = claims.getSubject();
+        User user = repository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        return jwtService.generateToken(user.getPhoneNumber());
+    }
 }
