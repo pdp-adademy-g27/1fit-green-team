@@ -1,9 +1,9 @@
-package com.example.onefit.phoneNumber;
+package com.example.onefit.otp;
 
 import com.example.onefit.common.response.CommonResponse;
 import com.example.onefit.common.secirity.JwtService;
-import com.example.onefit.phoneNumber.otp.OtpService;
-import com.example.onefit.phoneNumber.otp.dto.ValidatePhoneNumberRequestDto;
+import com.example.onefit.otp.otp.OtpService;
+import com.example.onefit.otp.otp.dto.ValidatePhoneNumberRequestDto;
 import com.example.onefit.user.UserService;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserCreateDto;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-public class PhoneNumberController {
+public class OtpController {
     private final UserService userService;
     private final OtpService otpService;
     private final JwtService jwtService;

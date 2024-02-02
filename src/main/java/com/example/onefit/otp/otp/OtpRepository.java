@@ -1,6 +1,6 @@
-package com.example.onefit.phoneNumber.otp;
+package com.example.onefit.otp.otp;
 
-import com.example.onefit.phoneNumber.otp.entity.Otp;
+import com.example.onefit.otp.otp.entity.Otp;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
