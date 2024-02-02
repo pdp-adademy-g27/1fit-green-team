@@ -1,9 +1,8 @@
 package com.example.onefit.user.dto;
 
-import com.example.onefit.active.entity.Activity;
-import com.example.onefit.course.entity.Course;
+import com.example.onefit.active.dto.ActivityResponseDto;
+import com.example.onefit.course.dto.CourseResponseDto;
 import com.example.onefit.subscription.dto.SubscriptionResponseDto;
-import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.role.dto.RoleResponseDto;
 import lombok.*;
 
@@ -27,10 +26,11 @@ public class UserResponseDto extends UserBaseDto{
 
     private Set<String> permissions;
 
-    private Set<Course> courses;
+    private Set<CourseResponseDto> courses;
 
-    private Set<Activity> activities;
+    private Set<ActivityResponseDto> activities;
 
-    private Subscription subscription;
+    private SubscriptionResponseDto subscriptionResponseDto;
+
 
 }

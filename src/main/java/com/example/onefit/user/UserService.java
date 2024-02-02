@@ -4,8 +4,14 @@ package com.example.onefit.user;
 import com.example.onefit.common.exeptions.OtpException;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
+import com.example.onefit.course.CourseRepository;
+
+import com.example.onefit.course.entity.Course;
+import com.example.onefit.exception.SubscriptionNotFoundException;
 import com.example.onefit.otp.otp.OtpRepository;
 import com.example.onefit.otp.otp.entity.Otp;
+import com.example.onefit.subscription.SubscriptionRepository;
+import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,7 +25,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+import java.util.Set;
 import java.util.UUID;
+
+import static com.example.onefit.common.variable.ExcMessage.*;
 
 @Getter
 @Service
@@ -31,11 +41,14 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final Class<User> entityClass = User.class;
     private final PasswordEncoder passwordEncoder;
     private final OtpRepository otpRepository;
+    private final SubscriptionRepository subscriptionRepository;
+    private final CourseRepository courseRepository;
+
 
 
     @Transactional
     @Override
-    protected UserResponseDto internalCreate(UserCreateDto userCreateDto) {
+    public UserResponseDto internalCreate(UserCreateDto userCreateDto) {
         User entity = mapper.toEntity(userCreateDto);
         entity.setId(UUID.randomUUID());
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
@@ -57,10 +70,10 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
 
     @Transactional
     @Override
-    protected UserResponseDto internalUpdate(UserUpdateDto userUpdateDto, UUID uuid) {
+    public UserResponseDto internalUpdate(UserUpdateDto userUpdateDto, UUID uuid) {
         User user = repository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException(ExcMessage.USER_ID_NOTFOUND.formatted(uuid)));
-        mapper.toUpdate(userUpdateDto,user);
+                .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(uuid)));
+        mapper.toUpdate(userUpdateDto, user);
         User savedUser = repository.save(user);
         return mapper.toResponse(savedUser);
     }
@@ -71,6 +84,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         return repository.findByPhoneNumber(username)
                 .orElseThrow(() -> new BadCredentialsException(ExcMessage.BAD_CREDENTIALS));
     }
+
     @Transactional
     public UserResponseDto signIn(UserSignInDto signInDto) {
         User user = repository.findByPhoneNumber(signInDto.getPhoneNumber())
@@ -92,5 +106,41 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User saved = repository.save(entity);
         return mapper.toResponse(saved);
     }
+
+
+    @Transactional
+    public UserResponseDto bySubscription(UUID subscriptionId, UUID userId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(userId)));
+
+        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND.formatted(subscriptionId)));
+        user.setSubscription(subscription);
+        User saved = repository.save(user);
+        return mapper.toResponse(saved);
+    }
+
+
+    @Transactional
+    public UserResponseDto byCourse(UUID userId, UUID courseId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(userId)));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(courseId)));
+
+        Subscription subscription = user.getSubscription();
+
+        if (subscription == null) {
+            throw new SubscriptionNotFoundException("Subscription not found");
+        }
+        subscriptionRepository.findById(subscription.getId())
+                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND.formatted(subscription.getId())));
+        Set<Course> courses = user.getCourses();
+        courses.add(course);
+        User saved = repository.save(user);
+        return mapper.toResponse(saved);
+    }
+
 
 }
