@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         registry -> registry
                                 .requestMatchers(
+                                        "/subscription/**",
                                         "role/**",
                                         "permission/**",
                                         "/user/**",

@@ -38,19 +38,17 @@ public class CourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CourseResponseDto> update(@PathVariable UUID id , @RequestBody CourseUpdateDto updateDto){
-
         CourseResponseDto update = courseService.update(updateDto, id);
-
         return ResponseEntity.ok(update);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CourseResponseDto> delete(@PathVariable UUID id){
-
         courseService.delete(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.onefit.user;
 
 import com.example.onefit.user.dto.*;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,8 +28,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<UserResponseDto>> getAll(Pageable pageable,
-                                                            @RequestParam(required = false) String predicate) {
-        Page<UserResponseDto> all = userService.getAll(predicate,pageable);
+                                                        @RequestParam(required = false) String predicate) {
+        Page<UserResponseDto> all = userService.getAll(predicate, pageable);
         return ResponseEntity.ok(all);
     }
 
@@ -52,6 +51,23 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
+    @PutMapping("/byCourse{userId}/course/{courseId}")
+    public ResponseEntity<UserResponseDto> byCourse(@PathVariable UUID userId, @PathVariable UUID courseId) {
+        UserResponseDto responseDto = userService.byCourse(userId, courseId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/subscription/{subscriptionId}/user/{userId}")
+    public ResponseEntity<UserResponseDto> bySubscription(@PathVariable UUID subscriptionId, @PathVariable UUID userId){
+        UserResponseDto subscription = userService.bySubscription(subscriptionId, userId);
+        return ResponseEntity.ok(subscription);
+    }
+
+
+
+
 
 
 }

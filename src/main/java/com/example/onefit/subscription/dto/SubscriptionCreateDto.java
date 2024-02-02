@@ -1,6 +1,8 @@
 package com.example.onefit.subscription.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubscriptionCreateDto {
-    @NotBlank
-    private String days;
-    @NotBlank
-    private String freezingDay;
-    @NotBlank
+
+    private Integer days;
+
+    private Integer freezingDay;
+
     private Double price;
-    @NotBlank
+
     private String images;
 
     private boolean isPopular;
