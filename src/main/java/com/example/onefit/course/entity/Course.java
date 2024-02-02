@@ -27,20 +27,25 @@ public class Course {
     private boolean isFemale;
 
     @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Location location;
 
 
     @ManyToMany(mappedBy = "courses")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<User> users;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "course")
-
     private Set<Rating> ratings;
 
 
     @ManyToMany(mappedBy = "courses")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Category> categories;
 
 
@@ -69,5 +74,7 @@ public class Course {
 
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Studio studio;
 }

@@ -68,21 +68,6 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
 //        return roleDtoMapper.toResponse(saved);
     }
 
-    @Override
-    protected GenericRepository<UUID, Role> getRepository() {
-        return null;
-    }
-
-    @Override
-    protected Class<UUID> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    protected GenericMapper<UUID, RoleCreateDto, RoleResponseDto, RoleUpdateDto> getMapper() {
-        return null;
-    }
-
 
 
 

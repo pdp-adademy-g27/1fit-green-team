@@ -20,9 +20,15 @@ public class Rating {
     private Integer star;
     private String comment;
     @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
     @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Course course;
     @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Studio studio;
 }

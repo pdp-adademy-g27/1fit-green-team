@@ -24,9 +24,13 @@ public class Studio {
     private String description;
 
     @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Location location;
 
     @OneToMany(mappedBy = "studio")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Rating> rating;
     private boolean isFemale;
 
@@ -41,9 +45,13 @@ public class Studio {
     private Set<Activity> activities;
 
     @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Subscription subscription;
 
     @OneToMany(mappedBy = "studio")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Course> courses;
 
 

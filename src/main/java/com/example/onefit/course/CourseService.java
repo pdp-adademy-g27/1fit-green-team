@@ -13,6 +13,7 @@ import com.example.onefit.location.LocationDtoMapper;
 import com.example.onefit.location.LocationRepository;
 import com.example.onefit.location.dto.LocationCreateDto;
 import com.example.onefit.location.entity.Location;
+import com.example.onefit.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static com.example.onefit.common.variable.ExcMessage.COURSE_NOTFOUND;
 
 
 @Service
@@ -32,6 +35,7 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
     private final CourseDtoMapper mapper;
     private final LocationDtoMapper locationDtoMapper;
     private final LocationRepository locationRepository;
+    private final UserRepository userRepository;
 
 
     @Transactional
@@ -64,7 +68,7 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
     @Override
     protected CourseResponseDto internalUpdate(CourseUpdateDto courseUpdateDto, UUID uuid) {
         Course course = repository.findById(uuid).orElseThrow(
-                () -> new EntityNotFoundException(ExcMessage.COURSE_NOTFOUND.formatted(uuid)));
+                () -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(uuid)));
         mapper.toUpdate(courseUpdateDto, course);
         Course saved = repository.save(course);
         return mapper.toResponse(saved);
@@ -74,6 +78,5 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
     protected CourseResponseDto internalCreate(CourseCreateDto courseCreateDto) {
         return null;
     }
-
 
 }

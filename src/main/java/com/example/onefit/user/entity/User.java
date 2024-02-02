@@ -3,6 +3,7 @@ package com.example.onefit.user.entity;
 import com.example.onefit.active.entity.Activity;
 import com.example.onefit.course.entity.Course;
 import com.example.onefit.rating.entity.Rating;
+import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.permission.entity.Permission;
 import com.example.onefit.user.role.entiy.Role;
 import jakarta.persistence.*;
@@ -60,6 +61,8 @@ public class User implements UserDetails {
 
 
     @OneToMany(mappedBy = "user")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Rating> ratings;
 
 
@@ -105,6 +108,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Activity> activities;
+
+
+    @ManyToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Subscription subscription;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
