@@ -1,4 +1,4 @@
-package com.example.onefit.phoneNumber.otp.entity;
+package com.example.onefit.otp.otp.entity;
 
 import jakarta.persistence.EntityListeners;
 import lombok.AllArgsConstructor;
