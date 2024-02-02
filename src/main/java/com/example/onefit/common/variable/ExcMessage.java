@@ -14,5 +14,7 @@ public interface ExcMessage {
     String FACILITIES_NOTFOUND = "Facilities is not found id %s";
     String LOCATION_NOTFOUND = "Location with id %s not found";
     String CATEGORY_NOTFOUND = "Category with id %s not found";
+    String USER_ID_NOTFOUND = "User with id: %s not found";
+    String NOT_CORRECT = "Username or password is not correct";
 
 }

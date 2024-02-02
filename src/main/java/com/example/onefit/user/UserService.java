@@ -4,8 +4,8 @@ package com.example.onefit.user;
 import com.example.onefit.common.exeptions.OtpException;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
-import com.example.onefit.phoneNumber.otp.OtpRepository;
-import com.example.onefit.phoneNumber.otp.entity.Otp;
+import com.example.onefit.otp.otp.OtpRepository;
+import com.example.onefit.otp.otp.entity.Otp;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,6 +33,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final OtpRepository otpRepository;
 
 
+    @Transactional
     @Override
     protected UserResponseDto internalCreate(UserCreateDto userCreateDto) {
         User entity = mapper.toEntity(userCreateDto);
@@ -43,6 +44,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         return mapper.toResponse(saved);
 
     }
+
     private void isPhoneNumberVerified(String phoneNumber) {
         Otp otp = otpRepository
                 .findById(phoneNumber)
@@ -53,11 +55,12 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         }
     }
 
+    @Transactional
     @Override
     protected UserResponseDto internalUpdate(UserUpdateDto userUpdateDto, UUID uuid) {
-        User user = repository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("User with id: %s not found".formatted(uuid)));
+        User user = repository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException(ExcMessage.USER_ID_NOTFOUND.formatted(uuid)));
         mapper.toUpdate(userUpdateDto,user);
-
         User savedUser = repository.save(user);
         return mapper.toResponse(savedUser);
     }
@@ -71,12 +74,11 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     @Transactional
     public UserResponseDto signIn(UserSignInDto signInDto) {
         User user = repository.findByPhoneNumber(signInDto.getPhoneNumber())
-                .orElseThrow(() -> new BadCredentialsException("Username or password is not correct"));
+                .orElseThrow(() -> new BadCredentialsException(ExcMessage.NOT_CORRECT));
 
         if (!passwordEncoder.matches(signInDto.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Username or password is not correct");
+            throw new BadCredentialsException(ExcMessage.NOT_CORRECT);
         }
-
         return mapper.toResponse(user);
     }
 
