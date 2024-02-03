@@ -18,19 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
-        UserResponseDto userResponseDto = userService.create(userCreateDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userResponseDto);
-    }
-
-    @PostMapping("/refresh-token")
-    public String refreshToken(@RequestParam String refreshToken){
-        return userService.refreshToken(refreshToken);
-    }
-
     @GetMapping
     public ResponseEntity<Page<UserResponseDto>> getAll(Pageable pageable,
                                                         @RequestParam(required = false) String predicate) {

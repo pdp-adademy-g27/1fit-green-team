@@ -23,9 +23,6 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +35,7 @@ import static com.example.onefit.common.variable.ExcMessage.*;
 @Getter
 @Service
 @RequiredArgsConstructor
-public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto> implements UserDetailsService {
+public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto>  {
 
     private final UserRepository repository;
     private final UserDtoMapper mapper;
@@ -83,12 +80,6 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         return mapper.toResponse(savedUser);
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByPhoneNumber(username)
-                .orElseThrow(() -> new BadCredentialsException(ExcMessage.BAD_CREDENTIALS));
-    }
 
     @Transactional
     public UserResponseDto signIn(UserSignInDto signInDto) {
