@@ -1,4 +1,4 @@
-package com.example.onefit.common.exeptions;
+package com.example.onefit.exception;
 
 import com.example.onefit.common.response.ResponseConstants;
 

@@ -1,10 +1,7 @@
 package com.example.onefit.exception.exceptionHandling;
 
 import com.example.onefit.common.variable.ExcMessage;
-import com.example.onefit.exception.DataNotFoundException;
-import com.example.onefit.exception.IncorrectPassword;
-import com.example.onefit.exception.TimeOut;
-import com.example.onefit.exception.TokenExpiredException;
+import com.example.onefit.exception.*;
 import com.example.onefit.exception.dto.ExceptionDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +36,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDto> handleDataNotFound(DataNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDto(e.getMessage(), 404));
+    }
+
+
+    @ExceptionHandler(SubscriptionNotFoundException.class)
+    public ResponseEntity<ExceptionDto> handleSubscriptionNotFound(SubscriptionNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionDto(e.getMessage(), 404));
     }
 
     @ExceptionHandler(TokenExpiredException.class)

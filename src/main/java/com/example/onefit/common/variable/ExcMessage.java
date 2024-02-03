@@ -17,5 +17,6 @@ public interface ExcMessage {
     String USER_ID_NOTFOUND = "User with id: %s not found";
     String NOT_CORRECT = "Username or password is not correct";
     String SUBSCRIPTION_NOTFOUND = "Subscription is not found id %s";
+    String STUDIO_NOTFOUND = "Studio is not found id: %s";
 
 }

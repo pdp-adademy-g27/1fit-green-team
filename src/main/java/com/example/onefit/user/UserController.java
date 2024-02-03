@@ -26,6 +26,11 @@ public class UserController {
                 .body(userResponseDto);
     }
 
+    @PostMapping("/refresh-token")
+    public String refreshToken(@RequestParam String refreshToken){
+        return userService.refreshToken(refreshToken);
+    }
+
     @GetMapping
     public ResponseEntity<Page<UserResponseDto>> getAll(Pageable pageable,
                                                         @RequestParam(required = false) String predicate) {
