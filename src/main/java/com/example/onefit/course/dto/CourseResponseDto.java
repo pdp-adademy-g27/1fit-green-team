@@ -3,6 +3,7 @@ package com.example.onefit.course.dto;
 import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.category.dto.CategoryResponseDto;
 import com.example.onefit.facilities.dto.FacilitiesResponseDto;
+import com.example.onefit.location.dto.LocationResponseDto;
 import com.example.onefit.rating.entity.Rating;
 
 import lombok.AllArgsConstructor;
@@ -30,9 +31,11 @@ public class CourseResponseDto extends CourseBaseDto{
 
     private Set<Rating> ratings;
 
+    private LocationResponseDto locationResponseDto;
 
     private LocalDateTime created;
 
     private LocalDateTime updated;
+
 
 }

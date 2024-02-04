@@ -19,7 +19,7 @@ public class RoleDtoMapper extends GenericMapper<Role, RoleCreateDto, RoleRespon
     private final ModelMapper modelMapper;
     @Override
     protected ModelMapper getMapper() {
-        return null;
+        return modelMapper;
     }
 
     @Override

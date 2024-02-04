@@ -10,11 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.stream.Collectors;
+import static com.example.onefit.common.variable.ExcMessage.*;
 
 
 @RestControllerAdvice
@@ -82,6 +81,29 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ExceptionDto(e.getMessage(), 401));
     }
+
+    @ExceptionHandler(NotAllowedFemaleException.class)
+    public ResponseEntity<ExceptionDto> handleNotAllowed(NotAllowedFemaleException e){
+        log.error(NOT_ALLOWED_FEMALE + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionDto(e.getMessage(), 400));
+    }
+
+
+    @ExceptionHandler(NotAllowedMaleException.class)
+    public ResponseEntity<ExceptionDto> handleNotAllowed(NotAllowedMaleException e){
+        log.error(NOT_ALLOWED_MALE + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionDto(e.getMessage(), 400));
+    }
+
+    @ExceptionHandler(AccountNotVerified.class)
+    public ResponseEntity<ExceptionDto> handleNotAllowed(AccountNotVerified e){
+        log.error(ACCOUNT_NOT_VERIFIED + e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ExceptionDto(e.getMessage(), 401));
+    }
+
 
 
 }

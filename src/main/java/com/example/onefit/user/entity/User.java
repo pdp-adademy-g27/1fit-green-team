@@ -56,6 +56,8 @@ public class User implements UserDetails {
     @Column(columnDefinition = "boolean default false")
     private boolean isVerify;
 
+    private boolean isMale;
+
     @CreatedDate
     private LocalDateTime created;
 

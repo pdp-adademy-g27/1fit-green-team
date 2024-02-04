@@ -26,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
-        UserResponseDto userResponseDto = userService.create(userCreateDto);
+        UserResponseDto userResponseDto = userService.signUp(userCreateDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userResponseDto);

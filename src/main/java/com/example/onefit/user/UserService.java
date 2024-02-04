@@ -2,14 +2,12 @@ package com.example.onefit.user;
 
 
 import com.example.onefit.common.secirity.JwtService;
-import com.example.onefit.exception.DataNotFoundException;
-import com.example.onefit.exception.OtpException;
+import com.example.onefit.exception.*;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.course.CourseRepository;
 
 import com.example.onefit.course.entity.Course;
-import com.example.onefit.exception.SubscriptionNotFoundException;
 import com.example.onefit.otp.otp.OtpRepository;
 import com.example.onefit.otp.otp.entity.Otp;
 import com.example.onefit.subscription.SubscriptionRepository;
@@ -35,7 +33,7 @@ import static com.example.onefit.common.variable.ExcMessage.*;
 @Getter
 @Service
 @RequiredArgsConstructor
-public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto>  {
+public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto> {
 
     private final UserRepository repository;
     private final UserDtoMapper mapper;
@@ -45,7 +43,6 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final SubscriptionRepository subscriptionRepository;
     private final CourseRepository courseRepository;
     private final JwtService jwtService;
-
 
 
     @Transactional
@@ -109,6 +106,10 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User user = repository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(userId)));
 
+        if (!user.isVerify()) {
+            throw new AccountNotVerified(ACCOUNT_NOT_VERIFIED);
+        }
+
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND.formatted(subscriptionId)));
         user.setSubscription(subscription);
@@ -127,11 +128,23 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
 
         Subscription subscription = user.getSubscription();
 
+
         if (subscription == null) {
-            throw new SubscriptionNotFoundException("Subscription not found");
+            throw new SubscriptionNotFoundException(SUBSCRIPTION_NOTFOUND_WITH_USER);
         }
-        subscriptionRepository.findById(subscription.getId())
-                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND.formatted(subscription.getId())));
+        if (!user.isMale() && course.isMale()) {
+            throw new NotAllowedFemaleException(NOT_ALLOWED_FEMALE);
+        }
+
+        if (user.isMale() && !course.isMale()) {
+            throw new NotAllowedMaleException(NOT_ALLOWED_MALE);
+        }
+
+
+        subscriptionRepository
+                .findById(subscription.getId())
+                .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND
+                        .formatted(subscription.getId())));
         Set<Course> courses = user.getCourses();
         courses.add(course);
         User saved = repository.save(user);
@@ -139,11 +152,11 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     }
 
 
-    public String refreshToken(String refreshToken){
+    public String refreshToken(String refreshToken) {
         Claims claims = jwtService.getClaims(refreshToken);
         String userId = claims.getSubject();
         User user = repository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new DataNotFoundException("User not found"));
+                .orElseThrow(() -> new DataNotFoundException(USER_NOT_FOUND));
         return jwtService.generateToken(user.getPhoneNumber());
     }
 }

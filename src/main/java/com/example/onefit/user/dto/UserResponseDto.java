@@ -7,7 +7,6 @@ import com.example.onefit.user.role.dto.RoleResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
@@ -32,5 +31,6 @@ public class UserResponseDto extends UserBaseDto{
 
     private SubscriptionResponseDto subscriptionResponseDto;
 
+    private boolean isMale;
 
 }

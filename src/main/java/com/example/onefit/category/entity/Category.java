@@ -20,13 +20,8 @@ public class Category {
     private String minImage;
     private String bigImage;
 
+    @ManyToMany(mappedBy = "categories")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "course_category",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
     private Set<Course> courses;
 }

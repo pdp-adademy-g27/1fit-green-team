@@ -11,12 +11,17 @@ public interface ExcMessage {
     String COURSE_NOTFOUND = "Course is not found id %s";
     String ENTITY_NOTFOUND = "Entity not found";
     String USERNAME_NOTFOUND = "Username not found:";
+    String EMAIL_NOTFOUND = "Email with email: %s is not found";
     String FACILITIES_NOTFOUND = "Facilities is not found id %s";
     String LOCATION_NOTFOUND = "Location with id %s not found";
     String CATEGORY_NOTFOUND = "Category with id %s not found";
     String USER_ID_NOTFOUND = "User with id: %s not found";
     String NOT_CORRECT = "Username or password is not correct";
     String SUBSCRIPTION_NOTFOUND = "Subscription is not found id %s";
+    String SUBSCRIPTION_NOTFOUND_WITH_USER = "Subscription is not found id %s";
     String STUDIO_NOTFOUND = "Studio is not found id: %s";
+    String NOT_ALLOWED_FEMALE = "The course is only for men";
+    String NOT_ALLOWED_MALE = "The course is only for woman";
+    String ACCOUNT_NOT_VERIFIED = "Account via unverified email";
 
 }

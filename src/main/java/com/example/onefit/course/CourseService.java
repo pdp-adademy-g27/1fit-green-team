@@ -1,14 +1,14 @@
 package com.example.onefit.course;
 
-import com.example.onefit.common.mapper.GenericMapper;
-import com.example.onefit.common.repository.GenericRepository;
+
+import com.example.onefit.category.CategoryRepository;
+import com.example.onefit.category.entity.Category;
 import com.example.onefit.common.service.GenericService;
-import com.example.onefit.common.variable.ExcMessage;
-import com.example.onefit.course.dto.CourseCreateDto;
-import com.example.onefit.course.dto.CourseLocationCreateDto;
-import com.example.onefit.course.dto.CourseResponseDto;
-import com.example.onefit.course.dto.CourseUpdateDto;
+
+import com.example.onefit.course.dto.*;
 import com.example.onefit.course.entity.Course;
+import com.example.onefit.facilities.FacilitiesRepository;
+import com.example.onefit.facilities.entity.Facilities;
 import com.example.onefit.location.LocationDtoMapper;
 import com.example.onefit.location.LocationRepository;
 import com.example.onefit.location.dto.LocationCreateDto;
@@ -20,9 +20,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
 
-import static com.example.onefit.common.variable.ExcMessage.COURSE_NOTFOUND;
+import static com.example.onefit.common.variable.ExcMessage.*;
 
 
 @Service
@@ -36,6 +37,8 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
     private final LocationDtoMapper locationDtoMapper;
     private final LocationRepository locationRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final FacilitiesRepository facilitiesRepository;
 
 
     @Transactional
@@ -55,6 +58,7 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
     }
 
 
+    @Transactional
     public CourseResponseDto create(CourseCreateDto courseCreateDto, LocationCreateDto locationCreateDto) {
         Course entity = mapper.toEntity(courseCreateDto);
         Location location = locationDtoMapper.toEntity(locationCreateDto);
@@ -65,8 +69,9 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
         return mapper.toResponse(savedCourse);
     }
 
+    @Transactional
     @Override
-    protected CourseResponseDto internalUpdate(CourseUpdateDto courseUpdateDto, UUID uuid) {
+    public CourseResponseDto internalUpdate(CourseUpdateDto courseUpdateDto, UUID uuid) {
         Course course = repository.findById(uuid).orElseThrow(
                 () -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(uuid)));
         mapper.toUpdate(courseUpdateDto, course);
@@ -79,4 +84,35 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
         return null;
     }
 
+
+
+    @Transactional
+    public CourseResponseDto addCategoryInCourse(UUID categoryId, UUID courseId) {
+        Course course = repository.findById(courseId).orElseThrow(
+                () -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(courseId)));
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new EntityNotFoundException(CATEGORY_NOTFOUND.formatted(categoryId)));
+
+        Set<Category> categories = course.getCategories();
+        categories.add(category);
+        Course saved = repository.save(course);
+        System.out.println(categories);
+        return mapper.toResponse(saved);
+    }
+
+
+    @Transactional
+    public CourseResponseDto addFacilities(UUID facilitiesId, UUID courseId) {
+        Course course = repository.findById(courseId).orElseThrow(
+                () -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(courseId)));
+
+        Facilities facilities = facilitiesRepository.findById(facilitiesId).orElseThrow(
+                () -> new EntityNotFoundException(FACILITIES_NOTFOUND.formatted(facilitiesId)));
+
+        Set<Facilities> facilitiesSet = course.getFacilities();
+        facilitiesSet.add(facilities);
+        Course saved = repository.save(course);
+        return mapper.toResponse(saved);
+    }
 }
