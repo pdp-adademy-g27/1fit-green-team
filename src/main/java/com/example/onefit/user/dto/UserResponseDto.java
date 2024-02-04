@@ -2,6 +2,7 @@ package com.example.onefit.user.dto;
 
 import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.course.dto.CourseResponseDto;
+import com.example.onefit.location.dto.LocationResponseDto;
 import com.example.onefit.subscription.dto.SubscriptionResponseDto;
 import com.example.onefit.user.role.dto.RoleResponseDto;
 import lombok.*;

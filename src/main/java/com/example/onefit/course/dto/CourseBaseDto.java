@@ -18,5 +18,4 @@ public class CourseBaseDto {
     private boolean isMale;
 
 
-
 }

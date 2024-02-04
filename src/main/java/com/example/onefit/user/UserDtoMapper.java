@@ -1,14 +1,30 @@
 package com.example.onefit.user;
 
+import com.example.onefit.active.ActivityDtoMapper;
+import com.example.onefit.active.dto.ActivityResponseDto;
+import com.example.onefit.active.entity.Activity;
 import com.example.onefit.common.mapper.GenericMapper;
+import com.example.onefit.course.CourseDtoMapper;
+import com.example.onefit.course.dto.CourseResponseDto;
+import com.example.onefit.course.entity.Course;
+import com.example.onefit.location.LocationDtoMapper;
+import com.example.onefit.location.dto.LocationResponseDto;
 import com.example.onefit.subscription.SubscriptionDtoMapper;
+import com.example.onefit.subscription.dto.SubscriptionResponseDto;
+import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserUpdateDto;
 import com.example.onefit.user.entity.User;
+import com.example.onefit.user.permission.entity.Permission;
+import com.example.onefit.user.role.RoleDtoMapper;
+import com.example.onefit.user.role.dto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -17,6 +33,9 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
 
     private final ModelMapper mapper;
     private final SubscriptionDtoMapper subscriptionDtoMapper;
+    private final CourseDtoMapper courseDtoMapper;
+    private final ActivityDtoMapper activityDtoMapper;
+    private final RoleDtoMapper roleDtoMapper;
 
 
     @Override
@@ -26,18 +45,52 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
 
     @Override
     public User toEntity(UserCreateDto userCreateDto) {
-        return mapper.map(userCreateDto,User.class);
+        return mapper.map(userCreateDto, User.class);
     }
 
     @Override
     public UserResponseDto toResponse(User user) {
-       return mapper.map(user, UserResponseDto.class);
+        UserResponseDto responseDto = mapper.map(user, UserResponseDto.class);
+
+        Set<RoleResponseDto> roles = user
+                .getRoles()
+                .stream()
+                .map(roleDtoMapper::toResponse)
+                .collect(Collectors.toSet());
+
+        Set<String> permissions = user
+                .getPermissions()
+                .stream()
+                .map(Permission::getName)
+                .collect(Collectors.toSet());
+
+        Set<CourseResponseDto> courses = user
+                .getCourses()
+                .stream()
+                .map(courseDtoMapper::toResponse)
+                .collect(Collectors.toSet());
+
+        Set<ActivityResponseDto> activities = user
+                .getActivities()
+                .stream()
+                .map(activityDtoMapper::toResponse)
+                .collect(Collectors.toSet());
+
+        Subscription userSubscription = user.getSubscription();
+        SubscriptionResponseDto subscription = subscriptionDtoMapper.toResponse(userSubscription);
+
+        responseDto.setSubscriptionResponseDto(subscription);
+        responseDto.setPermissions(permissions);
+        responseDto.setActivities(activities);
+        responseDto.setCourses(courses);
+        responseDto.setRoles(roles);
+        return responseDto;
 
     }
 
 
     @Override
     public void toUpdate(UserUpdateDto userUpdateDto, User user) {
-        mapper.map(userUpdateDto,user);
+        mapper.map(userUpdateDto, user);
     }
 }
