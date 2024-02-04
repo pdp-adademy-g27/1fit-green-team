@@ -43,9 +43,22 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseResponseDto> delete(@PathVariable UUID id){
+    public ResponseEntity<?> delete(@PathVariable UUID id){
         courseService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/addCategory/{categoryId}/course/{courseId}")
+    public ResponseEntity<CourseResponseDto> addCategoryInCourse(@PathVariable UUID categoryId, @PathVariable UUID courseId){
+        CourseResponseDto courseDto = courseService.addCategoryInCourse(categoryId,courseId);
+        return ResponseEntity.ok(courseDto);
+    }
+
+
+    @PutMapping("/addFacilities/{facilitiesId}/course/{courseId}")
+    public ResponseEntity<CourseResponseDto> addFacilities(@PathVariable UUID facilitiesId, @PathVariable UUID courseId){
+        CourseResponseDto courseResponseDto = courseService.addFacilities(facilitiesId, courseId);
+        return ResponseEntity.ok(courseResponseDto);
     }
 
 

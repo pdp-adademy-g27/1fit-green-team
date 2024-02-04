@@ -1,6 +1,7 @@
 package com.example.onefit.course.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,10 @@ import lombok.NoArgsConstructor;
 public class CourseBaseDto {
     @NotBlank
     private String name;
-    @NotBlank
+    @NotNull
     private String description;
-    @NotBlank
-    private boolean isFemale;
+    private boolean isMale;
+
+
+
 }

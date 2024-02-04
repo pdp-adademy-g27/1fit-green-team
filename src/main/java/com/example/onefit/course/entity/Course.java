@@ -10,6 +10,11 @@ import com.example.onefit.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,13 +23,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "`course`")
+@EntityListeners(AuditingEntityListener.class)
 public class Course {
 
     @Id
     private UUID id;
     private String name;
     private String description;
-    private boolean isFemale;
+    private boolean isMale;
+
+    @CreatedDate
+    private LocalDateTime created;
+
+    @LastModifiedDate
+    private LocalDateTime updated;
 
     @OneToOne
     @EqualsAndHashCode.Exclude
@@ -43,9 +55,17 @@ public class Course {
     private Set<Rating> ratings;
 
 
-    @ManyToMany(mappedBy = "courses")
+
+
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "course_category",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     private Set<Category> categories;
 
 

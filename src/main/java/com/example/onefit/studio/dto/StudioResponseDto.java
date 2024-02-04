@@ -7,6 +7,7 @@ import com.example.onefit.rating.entity.Rating;
 import com.example.onefit.subscription.entity.Subscription;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,4 +32,8 @@ public class StudioResponseDto {
     private Subscription subscription;
 
     private Set<Course> courses;
+
+    private LocalDateTime created;
+
+    private LocalDateTime updated;
 }
