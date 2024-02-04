@@ -1,5 +1,8 @@
 package com.example.onefit.studio;
 
+import com.example.onefit.course.CourseService;
+import com.example.onefit.course.dto.CourseCreateDto;
+import com.example.onefit.course.dto.CourseResponseDto;
 import com.example.onefit.studio.dto.StudioCreateDto;
 import com.example.onefit.studio.dto.StudioResponseDto;
 import com.example.onefit.studio.dto.StudioUpdateDto;
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class StudioController {
 
     private final StudioService studioService;
+    private final CourseService courseService;
 
     @PostMapping
     public ResponseEntity<StudioResponseDto> create(@RequestBody @Valid StudioCreateDto studioCreateDto){
@@ -49,5 +53,13 @@ public class StudioController {
         studioService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PutMapping("/addCourses/{courseId}/studio/{studioId}")
+    public ResponseEntity<StudioResponseDto> addCourse(@PathVariable UUID coursId, @PathVariable UUID studioId){
+        StudioResponseDto studioResponseDto = studioService.addCourse(coursId, studioId);
+        return ResponseEntity.ok(studioResponseDto);
+    }
+
+
 
 }
