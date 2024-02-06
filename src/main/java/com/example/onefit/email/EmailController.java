@@ -1,7 +1,6 @@
 package com.example.onefit.email;
 
 import com.example.onefit.email.dto.EmailDto;
-import com.example.onefit.email.dto.EmailRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
