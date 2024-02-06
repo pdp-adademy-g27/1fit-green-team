@@ -1,6 +1,8 @@
 package com.example.onefit.active;
 
+import com.example.onefit.active.dto.ActivityResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
