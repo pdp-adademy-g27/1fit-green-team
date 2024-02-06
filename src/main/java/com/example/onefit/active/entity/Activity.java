@@ -19,8 +19,16 @@ import java.util.UUID;
 public class Activity {
     @Id
     private UUID id;
+
     private LocalDateTime startTime;
+
     private LocalDateTime endTime;
+
+    private int countLesson;
+
+    private  int maxLessons;
+
+    private boolean rateIsActive;
 
     @ManyToMany(mappedBy = "activities")
     @EqualsAndHashCode.Exclude
