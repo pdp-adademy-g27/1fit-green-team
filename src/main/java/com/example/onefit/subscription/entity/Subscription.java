@@ -17,7 +17,7 @@ public class Subscription {
     @Id
     private UUID id;
     @Column(nullable = false)
-    private Integer days; // monthly rate: the day of the month is written ...  average 1 month 30 days
+    private Integer days;
 
     @Column(nullable = false)
     private Integer freezingDay;

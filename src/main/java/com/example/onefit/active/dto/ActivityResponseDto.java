@@ -12,10 +12,4 @@ public class ActivityResponseDto {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
-
-    private int countLesson;
-
-    private int maxLessons;
-
-    private boolean rateIsActive;
 }

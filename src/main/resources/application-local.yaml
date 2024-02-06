@@ -21,6 +21,3 @@ one-fit:
   notification:
     sms:
       eskiz: add your token
-  course:
-    day:
-      duration: 3
