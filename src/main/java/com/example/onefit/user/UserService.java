@@ -122,7 +122,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
             throw new AccountNotVerified(ACCOUNT_NOT_VERIFIED);
         }
 
-        com.example.onefit.subscription.entity.Subscription subscription = subscriptionRepository.findById(subscriptionId)
+        Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new EntityNotFoundException(SUBSCRIPTION_NOTFOUND.formatted(subscriptionId)));
         user.setSubscription(subscription);
         User saved = repository.save(user);
@@ -138,7 +138,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(courseId)));
 
-        com.example.onefit.subscription.entity.Subscription subscription = user.getSubscription();
+        Subscription subscription = user.getSubscription();
 
 
         if (subscription == null) {
@@ -188,7 +188,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         }
 
 
-        com.example.onefit.subscription.entity.Subscription subscription = user.getSubscription();
+        Subscription subscription = user.getSubscription();
         Integer days = subscription.getDays();
 
         Set<User> users = activity.getUsers();
