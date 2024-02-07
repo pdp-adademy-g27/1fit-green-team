@@ -17,6 +17,8 @@ public interface ExcMessage {
     String LOCATION_NOTFOUND = "Location with id %s not found";
     String CATEGORY_NOTFOUND = "Category with id %s not found";
     String USER_ID_NOTFOUND = "User with id: %s not found";
+    String ROLE_ID_NOTFOUND = "Role with id: %s not found";
+    String PERMISSION_ID_NOTFOUND = "Permission with id: %s not found";
     String ACTIVITY_ID_NOTFOUND = "Activity with id: %s not found";
     String STUDIO_ID_NOTFOUND = "Studio with id: %s not found";
     String NOT_CORRECT = "Username or password is not correct";

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import static com.example.onefit.common.variable.ExcMessage.PERMISSION_ID_NOTFOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +60,15 @@ public class PermissionService extends GenericService<Permission, UUID, Permissi
     @Override
     protected GenericMapper<UUID, PermissionCreateDto, PermissionResponseDto, PermissionUpdateDto> getMapper() {
         return null;
+    }
+
+    public PermissionResponseDto update(PermissionUpdateDto permissionUpdateDto, UUID id) {
+        Permission permission = permissionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(PERMISSION_ID_NOTFOUND.formatted(id)));
+        permissionMapper.toUpdate(permissionUpdateDto, permission);
+        Permission savedPermission = permissionRepository.save(permission);
+        return permissionMapper.toResponse(savedPermission);
+
     }
 
 }

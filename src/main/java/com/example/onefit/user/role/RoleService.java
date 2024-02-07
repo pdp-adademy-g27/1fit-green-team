@@ -1,7 +1,6 @@
 package com.example.onefit.user.role;
 
 import com.example.onefit.common.mapper.GenericMapper;
-import com.example.onefit.common.repository.GenericRepository;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.user.permission.PermissionRepository;
 import com.example.onefit.user.permission.entity.Permission;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import static com.example.onefit.common.variable.ExcMessage.ROLE_ID_NOTFOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -53,23 +53,26 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
 
         Role saved = repository.save(entity);
         return roleDtoMapper.toResponse(saved);
-
     }
+    
+    public RoleResponseDto getByName(String name) {
+            Role role = repository
+                    .findByName(name)
+                    .orElseThrow(
+                            () -> new EntityNotFoundException("Role with name: %s not found".formatted(name)));
+            return roleDtoMapper.toResponse(role);
+    }
+        
 
+    public RoleResponseDto update(RoleUpdateDto updateDto, UUID id) {
+        Role role = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ROLE_ID_NOTFOUND.formatted(id)));
+        roleDtoMapper.toUpdate(updateDto, role);
+        Role savedRole = repository.save(role);
+        return roleDtoMapper.toResponse(savedRole);
+    }
     @Override
     protected RoleResponseDto internalUpdate(RoleUpdateDto roleUpdateDto, Role role) {
-        return null;
-//        Role roleName = roleRepository.findByName(role.getName())
-//                .orElseThrow(() ->
-//                        new EntityNotFoundException("Role with name %s not found".formatted(role.getName())));
-//
-//        roleDtoMapper.toEntity(roleUpdateDto, roleName);
-//        Role saved = roleRepository.save(roleName);
-//        return roleDtoMapper.toResponse(saved);
-    }
-
-    @Override
-    protected GenericRepository<UUID, Role> getRepository() {
         return null;
     }
 
@@ -82,18 +85,6 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
     protected GenericMapper<UUID, RoleCreateDto, RoleResponseDto, RoleUpdateDto> getMapper() {
         return null;
     }
-
-
-
-
-        public RoleResponseDto getByName(String name) {
-            Role role = repository
-                    .findByName(name)
-                    .orElseThrow(
-                            () -> new EntityNotFoundException("Role with name: %s not found".formatted(name))
-                    );
-            return roleDtoMapper.toResponse(role);
-        }
 
 
 }

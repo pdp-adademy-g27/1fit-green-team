@@ -1,8 +1,6 @@
 package com.example.onefit.studio;
 
 import com.example.onefit.course.CourseService;
-import com.example.onefit.course.dto.CourseCreateDto;
-import com.example.onefit.course.dto.CourseResponseDto;
 import com.example.onefit.studio.dto.StudioCreateDto;
 import com.example.onefit.studio.dto.StudioResponseDto;
 import com.example.onefit.studio.dto.StudioUpdateDto;
@@ -55,8 +53,8 @@ public class StudioController {
     }
 
     @PutMapping("/addCourses/{courseId}/studio/{studioId}")
-    public ResponseEntity<StudioResponseDto> addCourse(@PathVariable UUID coursId, @PathVariable UUID studioId){
-        StudioResponseDto studioResponseDto = studioService.addCourse(coursId, studioId);
+    public ResponseEntity<StudioResponseDto> addCourse(@PathVariable UUID courseId, @PathVariable UUID studioId){
+        StudioResponseDto studioResponseDto = studioService.addCourse(courseId, studioId);
         return ResponseEntity.ok(studioResponseDto);
     }
 
