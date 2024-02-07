@@ -20,7 +20,7 @@ public class CourseController {
     private final CourseService courseService;
     @PostMapping
     public ResponseEntity<CourseResponseDto> create(@RequestBody CourseLocationCreateDto createDto) {
-        CourseResponseDto courseResponseDto = courseService.createCreate(createDto);
+        CourseResponseDto courseResponseDto = courseService.createCourse(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(courseResponseDto);
     }
 

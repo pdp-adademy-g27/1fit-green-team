@@ -42,7 +42,7 @@ public class CourseService extends GenericService<UUID, Course, CourseResponseDt
 
 
     @Transactional
-    public CourseResponseDto createCreate(CourseLocationCreateDto createDto) {
+    public CourseResponseDto createCourse(CourseLocationCreateDto createDto) {
         CourseCreateDto createDtoCourse = createDto.getCourse();
         LocationCreateDto locationCreateDto = createDto.getLocation();
 

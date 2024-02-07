@@ -25,10 +25,15 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
+    public ResponseEntity<UserResponseDto> create(@RequestBody
+                                                  @Valid UserCreateDto userCreateDto
+    ) {
         UserResponseDto userResponseDto = userService.signUp(userCreateDto);
+        String token = jwtService.generateToken(userResponseDto.getPhoneNumber());
+
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(userResponseDto);
     }
 
@@ -46,10 +51,9 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public String refreshToken(@RequestParam String refreshToken){
+    public String refreshToken(@RequestParam String refreshToken) {
         return userService.refreshToken(refreshToken);
     }
-
 
 
 }
