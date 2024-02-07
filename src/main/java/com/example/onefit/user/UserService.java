@@ -17,7 +17,6 @@ import com.example.onefit.subscription.SubscriptionRepository;
 import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
-import com.example.onefit.user.profile.Followers;
 import com.example.onefit.user.role.RoleRepository;
 import com.example.onefit.user.role.entiy.Role;
 import io.jsonwebtoken.Claims;
