@@ -1,6 +1,7 @@
 package com.example.onefit.user.role;
 
 import com.example.onefit.common.mapper.GenericMapper;
+import com.example.onefit.common.repository.GenericRepository;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.user.permission.PermissionRepository;
 import com.example.onefit.user.permission.entity.Permission;
@@ -78,6 +79,10 @@ public class RoleService extends GenericService<Role, UUID, RoleResponseDto, Rol
 
     @Override
     protected Class<UUID> getEntityClass() {
+        return null;
+    }
+    @Override
+    protected GenericRepository<UUID, Role> getRepository() {
         return null;
     }
 

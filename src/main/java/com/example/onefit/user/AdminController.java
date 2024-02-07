@@ -1,4 +1,4 @@
-package com.example.onefit.user.admin;
+package com.example.onefit.user;
 
 import com.example.onefit.user.permission.PermissionService;
 import com.example.onefit.user.permission.dto.PermissionResponseDto;
@@ -18,13 +18,13 @@ import java.util.UUID;
 public class AdminController {
     private final RoleService roleService;
     private final PermissionService permissionService;
-    @PutMapping("/{id}")
+    @PutMapping("/{roleId}")
     public ResponseEntity<RoleResponseDto> updateRole(@PathVariable UUID id, @RequestBody @Valid RoleUpdateDto updateDto){
         RoleResponseDto roleResponseDto = roleService.update(updateDto, id);
         return ResponseEntity.ok(roleResponseDto);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<PermissionResponseDto>updatePermission(@PathVariable UUID id, @RequestBody PermissionUpdateDto permissionUpdateDto){
+    @PutMapping("/{permissionId}")
+    public ResponseEntity<PermissionResponseDto> updatePermission(@PathVariable UUID id, @RequestBody PermissionUpdateDto permissionUpdateDto){
         PermissionResponseDto update = permissionService.update(permissionUpdateDto, id);
         return ResponseEntity.ok(update);
 
