@@ -2,16 +2,15 @@ package com.example.onefit.user;
 
 import com.example.onefit.active.ActivityDtoMapper;
 import com.example.onefit.active.dto.ActivityResponseDto;
-import com.example.onefit.active.entity.Activity;
+
 import com.example.onefit.common.mapper.GenericMapper;
 import com.example.onefit.course.CourseDtoMapper;
 import com.example.onefit.course.dto.CourseResponseDto;
-import com.example.onefit.course.entity.Course;
-import com.example.onefit.location.LocationDtoMapper;
-import com.example.onefit.location.dto.LocationResponseDto;
+
 import com.example.onefit.subscription.SubscriptionDtoMapper;
 import com.example.onefit.subscription.dto.SubscriptionResponseDto;
 import com.example.onefit.subscription.entity.Subscription;
+import com.example.onefit.user.dto.ResponseDto;
 import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserUpdateDto;
@@ -47,6 +46,29 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
     public User toEntity(UserCreateDto userCreateDto) {
         return mapper.map(userCreateDto, User.class);
     }
+
+    public ResponseDto customResponseDto(User user) {
+        ResponseDto responseDto = mapper.map(user, ResponseDto.class);
+
+        Set<RoleResponseDto> roles = user
+                .getRoles()
+                .stream()
+                .map(roleDtoMapper::toResponse)
+                .collect(Collectors.toSet());
+
+        if (user.getPermissions() != null) {
+            Set<String> permissions = user
+                    .getPermissions()
+                    .stream()
+                    .map(Permission::getName)
+                    .collect(Collectors.toSet());
+
+            responseDto.setPermissions(permissions);
+        }
+        responseDto.setRoles(roles);
+        return responseDto;
+    }
+
 
     @Override
     public UserResponseDto toResponse(User user) {

@@ -3,13 +3,12 @@ package com.example.onefit.user.auth;
 
 import com.example.onefit.common.secirity.JwtService;
 import com.example.onefit.user.UserService;
+import com.example.onefit.user.dto.ResponseDto;
 import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserSignInDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,13 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
-        UserResponseDto userResponseDto = userService.signUp(userCreateDto);
+    public ResponseEntity<ResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
+        ResponseDto userResponseDto = userService.signUp(userCreateDto);
+        String token = jwtService.generateToken(userResponseDto.getPhoneNumber());
+
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(userResponseDto);
     }
 
