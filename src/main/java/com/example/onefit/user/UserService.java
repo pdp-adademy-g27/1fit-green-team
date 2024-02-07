@@ -1,7 +1,9 @@
 package com.example.onefit.user;
 
 
+import com.example.onefit.active.ActivityDtoMapper;
 import com.example.onefit.active.ActivityRepository;
+import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.active.entity.Activity;
 import com.example.onefit.common.secirity.JwtService;
 import com.example.onefit.exception.*;
@@ -17,7 +19,6 @@ import com.example.onefit.subscription.SubscriptionRepository;
 import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
-import com.example.onefit.user.profile.Followers;
 import com.example.onefit.user.role.RoleRepository;
 import com.example.onefit.user.role.entiy.Role;
 import io.jsonwebtoken.Claims;
@@ -57,6 +58,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final ActivityRepository activityRepository;
     private final StudioRepository studioRepository;
     private final RoleRepository roleRepository;
+    private final ActivityDtoMapper activityDtoMapper;
 
 
 
@@ -172,62 +174,69 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     }
 
     @Transactional
-    public Activity lessonActive(UUID userId, UUID courseId,UUID activityId, UUID studioId) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(userId)));
+    public ActivityResponseDto goingToLesson(GoingToLessonDto goingToLessonDto) {
 
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(courseId)));
+        User user = repository.findById(goingToLessonDto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(goingToLessonDto.getUserId())));
 
-        Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(() -> new EntityNotFoundException(ACTIVITY_ID_NOTFOUND.formatted(activityId)));
+        Activity activity1 = new Activity();
 
-        Studio studio = studioRepository.findById(studioId)
-                .orElseThrow(() -> new EntityNotFoundException(STUDIO_ID_NOTFOUND.formatted(studioId)));
+        Set<Course> courses = user.getCourses();
 
+        for (Course course1 : courses) {
+            if (course1.getId().equals(goingToLessonDto.getCourseId())) {
+                Course course = courseRepository.findById(goingToLessonDto.getCourseId())
+                        .orElseThrow(() -> new EntityNotFoundException(COURSE_NOTFOUND.formatted(goingToLessonDto.getCourseId())));
 
-        if (!user.isMale() && course.isMale()) {
-            throw new NotAllowedFemaleException(NOT_ALLOWED_FEMALE);
+                Activity activity = activityRepository.findById(goingToLessonDto.getActivityId())
+                        .orElseThrow(() -> new EntityNotFoundException(ACTIVITY_ID_NOTFOUND.formatted(goingToLessonDto.getActivityId())));
+
+                Studio studio = studioRepository.findById(goingToLessonDto.getStudioId())
+                        .orElseThrow(() -> new EntityNotFoundException(STUDIO_ID_NOTFOUND.formatted(goingToLessonDto.getStudioId())));
+
+                if (!user.isMale() && course.isMale()) {
+                    throw new NotAllowedFemaleException(NOT_ALLOWED_FEMALE);
+                }
+
+                if (user.isMale() && !course.isMale()) {
+                    throw new NotAllowedMaleException(NOT_ALLOWED_MALE);
+                }
+
+                Subscription subscription = user.getSubscription();
+                Integer days = subscription.getDays();
+
+                LocalDateTime start = LocalDateTime.now();
+                activity.setStartTime(start);
+
+                activity.setEndTime(start.plusHours(lessonDuration));
+
+                int countLesson = activity.getCountLesson();
+
+                activity.setCountLesson(countLesson + 1);
+
+                activity.setMaxLessons((days / 30) * 12);
+
+                if (activity.getCountLesson() > activity.getMaxLessons()) {
+                    throw new BadCredentialsException("the number of lessons is over, buy a new course");
+                } else {
+
+                    Set<User> users = activity.getUsers();
+                    users.add(user);
+
+                    Set<Course> courses3 = activity.getCourses();
+                    courses3.add(course);
+
+                    Set<Studio> studios = activity.getStudios();
+                    studios.add(studio);
+                    activity.setRateIsActive(true);
+                    activityRepository.save(activity);
+
+                   activity1=activity;
+                }
+            }
         }
-
-        if (user.isMale() && !course.isMale()) {
-            throw new NotAllowedMaleException(NOT_ALLOWED_MALE);
-        }
-
-
-        Subscription subscription = user.getSubscription();
-        Integer days = subscription.getDays();
-
-        Set<User> users = activity.getUsers();
-        users.add(user);
-
-        Set<Course> courses = activity.getCourses();
-        courses.add(course);
-
-        Set<Studio> studios = activity.getStudios();
-        studios.add(studio);
-
-        LocalDateTime start = LocalDateTime.now();
-        activity.setStartTime(start);
-
-        activity.setEndTime(start.plusHours(lessonDuration));
-
-        int countLesson = activity.getCountLesson();
-
-        activity.setCountLesson(countLesson+1);
-
-        activity.setMaxLessons((days/30)*12);
-
-        if(activity.getCountLesson()<=activity.getMaxLessons()){
-            activity.setRateIsActive(true);
-        }
-        activityRepository.save(activity);
-
-        return activity;
+        return activityDtoMapper.toResponse(activity1);
     }
-
-
-
 
     public String refreshToken(String refreshToken) {
         Claims claims = jwtService.getClaims(refreshToken);

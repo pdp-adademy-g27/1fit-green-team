@@ -1,5 +1,6 @@
 package com.example.onefit.user;
 
+import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.active.entity.Activity;
 import com.example.onefit.user.dto.*;
 import jakarta.validation.Valid;
@@ -58,10 +59,10 @@ public class UserController {
         return ResponseEntity.ok(subscription);
     }
 
-    @PutMapping("/user/{userId}/course/{courseId}/activity/{activityId}/studio/{studioId}")
-    public ResponseEntity<Activity> lessonActive(@PathVariable UUID userId, @PathVariable UUID courseId, @PathVariable UUID activityId, @PathVariable UUID studioId) {
-        Activity activity = userService.lessonActive(userId, courseId, activityId, studioId);
-        return ResponseEntity.ok(activity);
+    @PutMapping("/going/lesson")
+    public ResponseEntity<ActivityResponseDto> goingLesson(@RequestBody GoingToLessonDto goingToLessonDto) {
+        ActivityResponseDto activityResponseDto = userService.goingToLesson(goingToLessonDto);
+        return ResponseEntity.ok(activityResponseDto);
     }
 
 }
