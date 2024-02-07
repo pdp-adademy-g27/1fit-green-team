@@ -17,6 +17,9 @@ import com.example.onefit.subscription.SubscriptionRepository;
 import com.example.onefit.subscription.entity.Subscription;
 import com.example.onefit.user.dto.*;
 import com.example.onefit.user.entity.User;
+import com.example.onefit.user.profile.Followers;
+import com.example.onefit.user.role.RoleRepository;
+import com.example.onefit.user.role.entiy.Role;
 import io.jsonwebtoken.Claims;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -53,6 +56,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final JwtService jwtService;
     private final ActivityRepository activityRepository;
     private final StudioRepository studioRepository;
+    private final RoleRepository roleRepository;
 
 
 
@@ -103,13 +107,15 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
 
 
     @Transactional
-    public UserResponseDto signUp(UserCreateDto userCreateDto) {
+    public ResponseDto signUp(UserCreateDto userCreateDto) {
         User entity = mapper.toEntity(userCreateDto);
+        Role role = roleRepository.findByName("USER").get();
         entity.setId(UUID.randomUUID());
+        entity.setRoles(Set.of(role));
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         isPhoneNumberVerified(userCreateDto.getPhoneNumber());
         User saved = repository.save(entity);
-        return mapper.toResponse(saved);
+        return mapper.customResponseDto(saved);
     }
 
 
@@ -164,6 +170,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User saved = repository.save(user);
         return mapper.toResponse(saved);
     }
+
     @Transactional
     public Activity lessonActive(UUID userId, UUID courseId,UUID activityId, UUID studioId) {
         User user = repository.findById(userId)
@@ -229,4 +236,5 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
                 .orElseThrow(() -> new DataNotFoundException(USER_NOT_FOUND));
         return jwtService.generateToken(user.getPhoneNumber());
     }
+
 }
