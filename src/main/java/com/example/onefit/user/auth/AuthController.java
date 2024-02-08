@@ -3,17 +3,18 @@ package com.example.onefit.user.auth;
 
 import com.example.onefit.common.secirity.JwtService;
 import com.example.onefit.user.UserService;
+import com.example.onefit.user.dto.ForgetPasswordDto;
 import com.example.onefit.user.dto.UserCreateDto;
 import com.example.onefit.user.dto.UserResponseDto;
 import com.example.onefit.user.dto.UserSignInDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,6 +44,13 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(userResponseDto);
+    }
+
+
+    @PutMapping("/updatePassword/{userId}")
+    public String updatePassword(Principal principal, @RequestBody ForgetPasswordDto forgetPasswordDto){
+        userService.updatePassword(principal, forgetPasswordDto);
+        return "success";
     }
 
     @PostMapping("/refresh-token")

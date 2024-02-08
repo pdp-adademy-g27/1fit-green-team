@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -170,6 +171,8 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User saved = repository.save(user);
         return mapper.toResponse(saved);
     }
+
+
     @Transactional
     public Activity lessonActive(UUID userId, UUID courseId,UUID activityId, UUID studioId) {
         User user = repository.findById(userId)
@@ -234,5 +237,12 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User user = repository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new DataNotFoundException(USER_NOT_FOUND));
         return jwtService.generateToken(user.getPhoneNumber());
+    }
+
+    public void updatePassword(Principal principal, ForgetPasswordDto forgetPasswordDto) {
+        String email = principal.getName();
+        System.out.println(email);
+        User user = repository.findByEmail(email).orElseThrow();
+
     }
 }
