@@ -118,8 +118,14 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         User user = repository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(USER_ID_NOTFOUND.formatted(userId)));
 
+        Subscription subscriptionUser = user.getSubscription();
+
         if (!user.isVerify()) {
             throw new AccountNotVerified(ACCOUNT_NOT_VERIFIED);
+        }
+
+        if (subscriptionUser != null){
+            throw new NotAllowedMaleException(NOT_ALLOWED);
         }
 
         Subscription subscription = subscriptionRepository.findById(subscriptionId)

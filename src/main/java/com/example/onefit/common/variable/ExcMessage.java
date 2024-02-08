@@ -26,5 +26,6 @@ public interface ExcMessage {
     String NOT_ALLOWED_FEMALE = "The course is only for men";
     String NOT_ALLOWED_MALE = "The course is only for woman";
     String ACCOUNT_NOT_VERIFIED = "Account via unverified email";
+    String NOT_ALLOWED = "Not allowed !";
 
 }
