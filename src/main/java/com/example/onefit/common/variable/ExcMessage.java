@@ -6,6 +6,7 @@ public interface ExcMessage {
     String USER_NOT_FOUND = "User not found";
     String SUCCESSFULLY_VERIFICATION = "Successfully verification";
     String INCORRECT_EMAIL_VER = "Incorrect email verification";
+    String PASSWORD_INCORRECT = "Password incorrect";
     String TIME_OUT = "Time out";
     String BAD_CREDENTIALS = "bad credentials";
     String REDIS_EXCEPTION = "RedisConnectionFailureException";
