@@ -1,18 +1,18 @@
 package com.example.onefit.user.auth;
 
 
+import com.example.onefit.common.response.CommonResponse;
 import com.example.onefit.common.secirity.JwtService;
+
 import com.example.onefit.user.UserService;
-import com.example.onefit.user.dto.ResponseDto;
-import com.example.onefit.user.dto.UserCreateDto;
-import com.example.onefit.user.dto.UserResponseDto;
-import com.example.onefit.user.dto.UserSignInDto;
+import com.example.onefit.user.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -35,10 +35,10 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<UserResponseDto> singIn(
+    public ResponseEntity<ResponseDto> singIn(
             @RequestBody @Valid UserSignInDto signInDto
     ) {
-        UserResponseDto userResponseDto = userService.signIn(signInDto);
+        ResponseDto userResponseDto = userService.signIn(signInDto);
         String token = jwtService.generateToken(userResponseDto.getPhoneNumber());
 
         return ResponseEntity
@@ -47,11 +47,26 @@ public class AuthController {
                 .body(userResponseDto);
     }
 
-    @PostMapping("/refresh-token")
-    public String refreshToken(@RequestParam String refreshToken){
-        return userService.refreshToken(refreshToken);
+
+    @PostMapping("/forget-password")
+    public ResponseEntity<CommonResponse> forgetPassword() {
+        CommonResponse commonResponse = userService.forgetPassword();
+        return ResponseEntity.ok(commonResponse);
     }
 
+    @PutMapping("/update-password")
+    public ResponseEntity<CommonResponse> updatePassword(
+            @RequestBody @Valid ForgetPasswordDto forgetPasswordDto
+    ) {
+        CommonResponse commonResponse = userService.updatePassword(forgetPasswordDto);
+        return ResponseEntity.ok(commonResponse);
+    }
+
+
+    @PostMapping("/refresh-token")
+    public String refreshToken(@RequestParam String refreshToken) {
+        return userService.refreshToken(refreshToken);
+    }
 
 
 }

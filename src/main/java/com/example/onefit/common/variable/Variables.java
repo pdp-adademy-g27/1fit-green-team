@@ -11,4 +11,6 @@ public interface Variables {
     String OTP_SUCCESSFULLY = "Otp was successfully verified";
     String OTP_INCORRECT = "Otp was incorrect";
     String SMS_RESENT = "Sms was re-sent successfully";
+    String FORGET_MESSAGE = "Parolni yangilash uchun url";
+    String PASSWORD_UPDATE = "Password update successfully";
 }

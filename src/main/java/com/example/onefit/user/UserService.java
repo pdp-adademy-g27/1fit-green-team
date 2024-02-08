@@ -5,12 +5,14 @@ import com.example.onefit.active.ActivityDtoMapper;
 import com.example.onefit.active.ActivityRepository;
 import com.example.onefit.active.dto.ActivityResponseDto;
 import com.example.onefit.active.entity.Activity;
+import com.example.onefit.common.response.CommonResponse;
 import com.example.onefit.common.secirity.JwtService;
 import com.example.onefit.exception.*;
 import com.example.onefit.common.service.GenericService;
 import com.example.onefit.common.variable.ExcMessage;
 import com.example.onefit.course.CourseRepository;
 import com.example.onefit.course.entity.Course;
+import com.example.onefit.notification.NotificationService;
 import com.example.onefit.otp.otp.OtpRepository;
 import com.example.onefit.otp.otp.entity.Otp;
 import com.example.onefit.studio.StudioRepository;
@@ -28,7 +30,11 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +44,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.example.onefit.common.variable.ExcMessage.*;
+import static com.example.onefit.common.variable.Variables.*;
 
 @Getter
 @Service
@@ -45,7 +52,7 @@ import static com.example.onefit.common.variable.ExcMessage.*;
 public class UserService extends GenericService<UUID, User, UserResponseDto, UserCreateDto, UserUpdateDto> {
 
     @Value("${one-fit.course.day.duration}")
-    private  int lessonDuration;
+    private int lessonDuration;
 
     private final UserRepository repository;
     private final UserDtoMapper mapper;
@@ -59,8 +66,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
     private final StudioRepository studioRepository;
     private final RoleRepository roleRepository;
     private final ActivityDtoMapper activityDtoMapper;
-
-
+    private final NotificationService notificationService;
 
 
     @Transactional
@@ -97,14 +103,14 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
 
 
     @Transactional
-    public UserResponseDto signIn(UserSignInDto signInDto) {
+    public ResponseDto signIn(UserSignInDto signInDto) {
         User user = repository.findByPhoneNumber(signInDto.getPhoneNumber())
                 .orElseThrow(() -> new BadCredentialsException(ExcMessage.NOT_CORRECT));
 
         if (!passwordEncoder.matches(signInDto.getPassword(), user.getPassword())) {
             throw new BadCredentialsException(ExcMessage.NOT_CORRECT);
         }
-        return mapper.toResponse(user);
+        return mapper.customResponseDto(user);
     }
 
 
@@ -231,7 +237,7 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
                     activity.setRateIsActive(true);
                     activityRepository.save(activity);
 
-                   activity1=activity;
+                    activity1 = activity;
                 }
             }
         }
@@ -246,4 +252,49 @@ public class UserService extends GenericService<UUID, User, UserResponseDto, Use
         return jwtService.generateToken(user.getPhoneNumber());
     }
 
+
+    @Transactional
+    public CommonResponse forgetPassword() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        if (principal == null) {
+            throw new NullPointerException();
+        }
+
+        String phoneNumber = principal.getUsername();
+        User user = repository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
+
+        String email = user.getEmail();
+        notificationService.forgetPassword(email, FORGET_MESSAGE);
+
+        return new CommonResponse(SEND_SMS_MESSAGE, LocalDateTime.now(), HttpStatus.OK.value());
+    }
+
+
+    @Transactional
+    public CommonResponse updatePassword(ForgetPasswordDto forgetPasswordDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) auth.getPrincipal();
+        if (principal == null) {
+            throw new NullPointerException();
+        }
+
+        String username = principal.getUsername();
+        User userEntity = repository.findByPhoneNumber(username)
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
+
+        String oldPassword = forgetPasswordDto.getOldPassword();
+        String newPassword = forgetPasswordDto.getNewPassword();
+
+        if (!oldPassword.equals(newPassword)) {
+            throw new IncorrectPassword(PASSWORD_INCORRECT);
+        }
+
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(userEntity);
+
+        return new CommonResponse(PASSWORD_UPDATE, LocalDateTime.now(), HttpStatus.OK.value());
+
+    }
 }

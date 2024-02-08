@@ -25,4 +25,18 @@ public class NotificationService {
         }
     }
 
+
+    public void forgetPassword(String email, String url) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(Variables.MY_EMAIL);
+            message.setTo(email);
+            message.setSubject(Variables.VERIFY_CODE_MESSAGE);
+            message.setText(url);
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
