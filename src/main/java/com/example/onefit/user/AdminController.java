@@ -19,13 +19,13 @@ public class AdminController {
     private final RoleService roleService;
     private final PermissionService permissionService;
     @PutMapping("/{roleId}")
-    public ResponseEntity<RoleResponseDto> updateRole(@PathVariable UUID id, @RequestBody @Valid RoleUpdateDto updateDto){
-        RoleResponseDto roleResponseDto = roleService.update(updateDto, id);
+    public ResponseEntity<RoleResponseDto> updateRole(@PathVariable UUID roleId, @RequestBody @Valid RoleUpdateDto updateDto){
+        RoleResponseDto roleResponseDto = roleService.update(updateDto, roleId);
         return ResponseEntity.ok(roleResponseDto);
     }
     @PutMapping("/{permissionId}")
-    public ResponseEntity<PermissionResponseDto> updatePermission(@PathVariable UUID id, @RequestBody PermissionUpdateDto permissionUpdateDto){
-        PermissionResponseDto update = permissionService.update(permissionUpdateDto, id);
+    public ResponseEntity<PermissionResponseDto> updatePermission(@PathVariable UUID permissionId, @RequestBody PermissionUpdateDto permissionUpdateDto){
+        PermissionResponseDto update = permissionService.update(permissionUpdateDto, permissionId);
         return ResponseEntity.ok(update);
 
     }
