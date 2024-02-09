@@ -1,11 +1,11 @@
 package com.example.onefit.studio.dto;
 
-import com.example.onefit.active.entity.Activity;
-import com.example.onefit.location.entity.Location;
+
+import com.example.onefit.location.dto.LocationCreateDto;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.Set;
 
 
 @Data
@@ -16,14 +16,10 @@ public class StudioCreateDto {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotNull
     private String description;
 
-    @NotBlank
-    private Location location;
-
-    @NotBlank
-    private Set<Activity> activities;
+    private LocationCreateDto locationCreateDto;
 
     private boolean isFemale;
 

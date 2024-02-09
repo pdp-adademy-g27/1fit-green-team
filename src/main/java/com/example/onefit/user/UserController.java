@@ -1,7 +1,6 @@
 package com.example.onefit.user;
 
 import com.example.onefit.active.dto.ActivityResponseDto;
-import com.example.onefit.active.entity.Activity;
 import com.example.onefit.user.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,6 +27,7 @@ public class UserController {
         return ResponseEntity.ok(all);
     }
 
+    @PreAuthorize("hasAnyAuthority('user:read')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> get(@PathVariable UUID id) {
         UserResponseDto responseDto = userService.get(id);

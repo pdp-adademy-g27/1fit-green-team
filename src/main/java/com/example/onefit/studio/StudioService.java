@@ -4,6 +4,8 @@ import com.example.onefit.common.service.GenericService;
 import com.example.onefit.course.CourseDtoMapper;
 import com.example.onefit.course.CourseRepository;
 import com.example.onefit.course.entity.Course;
+import com.example.onefit.location.dto.LocationCreateDto;
+import com.example.onefit.location.entity.Location;
 import com.example.onefit.studio.dto.StudioCreateDto;
 import com.example.onefit.studio.dto.StudioResponseDto;
 import com.example.onefit.studio.dto.StudioUpdateDto;
@@ -36,6 +38,12 @@ public class StudioService extends GenericService<UUID, Studio, StudioResponseDt
     public StudioResponseDto internalCreate(StudioCreateDto studioCreateDto) {
         Studio entity = mapper.toEntity(studioCreateDto);
         entity.setId(UUID.randomUUID());
+        LocationCreateDto locationCreateDto = studioCreateDto.getLocationCreateDto();
+        Location location = new Location(UUID.randomUUID(),
+                locationCreateDto.getName(),
+                locationCreateDto.getLat(),
+                locationCreateDto.getLon());
+        entity.setLocation(location);
         Studio saved = repository.save(entity);
         return mapper.toResponse(saved);
     }
