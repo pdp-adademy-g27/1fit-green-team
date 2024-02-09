@@ -56,35 +56,39 @@ public class CourseDtoMapper extends GenericMapper<Course, CourseCreateDto, Cour
     public CourseResponseDto toResponse(Course course) {
         CourseResponseDto courseResponseDto = modelMapper.map(course, CourseResponseDto.class);
 
-        Set<FacilitiesResponseDto> facilities = course
-                .getFacilities()
-                .stream()
-                .map(facilitiesDtoMapper::toResponse)
-                .collect(Collectors.toSet());
+        if (course.getFacilities() != null) {
+            Set<FacilitiesResponseDto> facilities = course
+                    .getFacilities()
+                    .stream()
+                    .map(facilitiesDtoMapper::toResponse)
+                    .collect(Collectors.toSet());
 
+            if (course.getCategories() != null) {
+                Set<CategoryResponseDto> categories = course
+                        .getCategories()
+                        .stream()
+                        .map(categoryDtoMapper::toResponse)
+                        .collect(Collectors.toSet());
 
-        Set<CategoryResponseDto> categories = course
-                .getCategories()
-                .stream()
-                .map(categoryDtoMapper::toResponse)
-                .collect(Collectors.toSet());
+                if (course.getActivities() != null) {
+                    Set<ActivityResponseDto> activities = course
+                            .getActivities()
+                            .stream()
+                            .map(activityDtoMapper::toResponse)
+                            .collect(Collectors.toSet());
 
+                    if (course.getLocation() != null) {
+                        Location response = course.getLocation();
+                        LocationResponseDto location = locationDtoMapper.toResponse(response);
 
-        Set<ActivityResponseDto> activities = course
-                .getActivities()
-                .stream()
-                .map(activityDtoMapper::toResponse)
-                .collect(Collectors.toSet());
-
-
-        Location response = course.getLocation();
-        LocationResponseDto location = locationDtoMapper.toResponse(response);
-
-        courseResponseDto.setCategories(categories);
-        courseResponseDto.setFacilities(facilities);
-        courseResponseDto.setActivities(activities);
-        courseResponseDto.setLocationResponseDto(location);
-
+                        courseResponseDto.setCategories(categories);
+                        courseResponseDto.setFacilities(facilities);
+                        courseResponseDto.setActivities(activities);
+                        courseResponseDto.setLocationResponseDto(location);
+                    }
+                }
+            }
+        }
 
         return courseResponseDto;
     }

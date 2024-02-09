@@ -33,7 +33,6 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
     private final ModelMapper mapper;
     private final SubscriptionDtoMapper subscriptionDtoMapper;
     private final CourseDtoMapper courseDtoMapper;
-    private final ActivityDtoMapper activityDtoMapper;
     private final RoleDtoMapper roleDtoMapper;
 
 
@@ -74,38 +73,40 @@ public class UserDtoMapper extends GenericMapper<User, UserCreateDto, UserRespon
     public UserResponseDto toResponse(User user) {
         UserResponseDto responseDto = mapper.map(user, UserResponseDto.class);
 
+
         Set<RoleResponseDto> roles = user
                 .getRoles()
                 .stream()
                 .map(roleDtoMapper::toResponse)
                 .collect(Collectors.toSet());
 
-        Set<String> permissions = user
-                .getPermissions()
-                .stream()
-                .map(Permission::getName)
-                .collect(Collectors.toSet());
+        if (user.getPermissions() != null) {
+            Set<String> permissions = user
+                    .getPermissions()
+                    .stream()
+                    .map(Permission::getName)
+                    .collect(Collectors.toSet());
 
-        Set<CourseResponseDto> courses = user
-                .getCourses()
-                .stream()
-                .map(courseDtoMapper::toResponse)
-                .collect(Collectors.toSet());
+            if (user.getCourses() != null) {
+                Set<CourseResponseDto> courses = user
+                        .getCourses()
+                        .stream()
+                        .map(courseDtoMapper::toResponse)
+                        .collect(Collectors.toSet());
 
-        Set<ActivityResponseDto> activities = user
-                .getActivities()
-                .stream()
-                .map(activityDtoMapper::toResponse)
-                .collect(Collectors.toSet());
 
-        Subscription userSubscription = user.getSubscription();
-        SubscriptionResponseDto subscription = subscriptionDtoMapper.toResponse(userSubscription);
+                if (user.getSubscription() != null) {
+                    Subscription userSubscription = user.getSubscription();
+                    SubscriptionResponseDto subscription = subscriptionDtoMapper.toResponse(userSubscription);
 
-        responseDto.setSubscriptionResponseDto(subscription);
-        responseDto.setPermissions(permissions);
-        responseDto.setActivities(activities);
-        responseDto.setCourses(courses);
-        responseDto.setRoles(roles);
+                    responseDto.setSubscriptionResponseDto(subscription);
+                    responseDto.setPermissions(permissions);
+                    responseDto.setCourses(courses);
+                    responseDto.setRoles(roles);
+                }
+            }
+        }
+
         return responseDto;
 
     }

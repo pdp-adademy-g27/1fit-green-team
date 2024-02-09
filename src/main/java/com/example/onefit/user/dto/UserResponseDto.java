@@ -28,8 +28,6 @@ public class UserResponseDto extends UserBaseDto{
 
     private Set<CourseResponseDto> courses;
 
-    private Set<ActivityResponseDto> activities;
-
     private SubscriptionResponseDto subscriptionResponseDto;
 
     private boolean isMale;
